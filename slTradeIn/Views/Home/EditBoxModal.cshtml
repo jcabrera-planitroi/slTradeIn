@@ -1,0 +1,38 @@
+﻿@model slTradeIn.Models.BeforeTradeInModel
+
+<script>
+    function ShowEditBoxModal(isReport) {
+        $("#EditBoxModal").modal("show");
+
+        if (isReport) {
+            EditBoxModal.classList.add('show-report');
+        } else {
+            EditBoxModal.classList.remove('show-report');
+        }
+    }
+</script>
+
+<style>
+    .show-report .shipping-form, .serialized-form {
+        display: none;
+    }
+
+    .show-report .serialized-form {
+        display: block;
+    }
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="EditBoxModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("~/Views/Home/_ShippingBoxForm.cshtml", Model)
+            </div>
+        </div>
+    </div>
+</div>

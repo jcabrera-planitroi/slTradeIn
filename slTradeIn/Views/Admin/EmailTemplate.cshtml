@@ -1,0 +1,72 @@
+﻿@model List<slTradeIn.Models.EmailTemplateModel>
+ 
+
+@{
+    ViewBag.Title = "EmailTemplate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div role="main" class="main">
+
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">List of Email Templates</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="@Url.Action("UserProfile","Home")">User Profile</a></li>
+                        <li class="active">Email Templates</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container pt-3 pb-2">
+        <input type="submit" class="btn btn-default" onclick="location.href='@Url.Action("CreateEmailTemplate","Admin")'" value="Create Template" />
+        <br />
+        <br />
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Template Name
+                    </th>
+                    <th>
+                        Subject
+                    </th>
+                    <th>
+                        Body
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.vTemplateName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.vSubject)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.vHTMLBody)
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-default btn-sm rounded-0" onclick="location.href = '@Url.Action("EditEmailTemplate","Admin")/@item.iEmailTemplateID'" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-danger btn-sm rounded-0" onclick="if (confirm('Do you want to delete this template?')) { location.href = '@Url.Action("DeleteEmailTemplate","Admin")/@item.iEmailTemplateID' }" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+
+</div>

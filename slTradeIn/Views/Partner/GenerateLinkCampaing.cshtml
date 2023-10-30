@@ -1,0 +1,119 @@
+﻿@model List<slTradeIn.Models.EmailCampaignModel>
+
+<script>
+    function ShowModal(id) {
+        $.ajax({
+            type: "GET",
+            url: "/Partner/CampaignModal",
+            data: { "id": id },
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                $("#CampaignModal").find(".modal-body").html(response);
+                $("#CampaignModal").modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>
+
+<div role="main" class="main">
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Generate Link Campaign</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="#">Partner</a></li>
+                        <li class="active">Generate Link Campaign</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row">
+            <a href="@Url.Action("Index", "Mail")">
+                Emails registered: @ViewBag.EmailsRegistered (Click here to add emails)
+            </a>
+        </div>
+        <br />
+        <input type="submit" class="btn btn-default" onclick="location.href='@Url.Action("CreateEmailCampaign","Partner")'" value="Create new Campaign" />
+        <br />
+        <br />
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Campaign Name
+                    </th>
+                    <th>
+                        Subject
+                    </th>
+                    <th>
+                        Email Groups
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dDateCreated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.vName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.vSubject)
+                    </td>
+                    <td>
+                        <button class="btn btn-default btn-sm rounded-0" onclick="ShowModal(@item.iEmailCampaignID);" type="button" data-toggle="tooltip" data-placement="top" title="Email Groups">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-default" onclick="if (confirm('Do you want to duplicate this template?')) { location.href = '@Url.Action("DuplicateEmailCampaign","Partner")/@item.iEmailCampaignID' }" type="button" data-toggle="tooltip" data-placement="top" title="Duplicate">Duplicate</button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="CampaignModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Email Groups</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("~/Views/Partner/CampaignModal.cshtml")
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

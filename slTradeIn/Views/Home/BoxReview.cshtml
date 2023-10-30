@@ -1,0 +1,625 @@
+﻿@model List<slTradeIn.Help.BoxFlowItem>
+@using slTradeIn.Data
+@using slTradeIn.Shared
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js"></script>
+@{
+    string quoteSignature = ViewBag.quoteSignature;
+    const string TEXT_WITH_SIGNATURE = "This signature will be used to continue with the order.";
+    const string TEXT_WITHOUT_SIGNATURE = "Please draw your signature in the next box to continue with the process.";
+    const string LABEL_WITH_SIGNATURE = "*You can change the signature or continue.";
+    const string LABEL_WITHOUT_SIGNATURE = "*Please draw your signature to continue.";
+    var cart = ViewBag.Cart as Detail_TTU_userCart;
+    string status = ViewBag.CartStatus as string;
+    bool hasSignature = cart.vImageName != null ? true : false;
+    bool isQuoteSigned = cart.bDateSigned != null ? true : false;
+    var selectedTextSerializedReport = new string[] {
+                                    "No, I don't want a Serialized Asset Report",
+                                    "Yes, I want a Serialized Asset Report",
+                                }[cart.bSerializedReport ? 1 : 0];
+
+    var selectedTextShippingType = new string[] {
+        "We pick up your pre-packaged devices.",
+                                    "We provide all the materials for your team to pack your devices and we pick up",
+                                    "PlanITROI does all the work. We will pick, pack and ship for you",
+                                }[cart.vShippingType - 1];
+
+    decimal totalValue = 0m;
+    bool userIsChangingSignature = false;
+    var dateExpiration = @Model.FirstOrDefault().creationDate.AddDays(30);
+    bool isQuoteExpired = DateTime.Now > dateExpiration ? true : false;
+    var expiredCssClass = "text-color-danger";
+
+}
+<style>
+    /*Invoice*/
+    .invoice .top-left {
+        font-size: 65px;
+        color: #3ba0ff;
+    }
+
+    .invoice .top-right {
+        text-align: right;
+        padding-right: 20px;
+    }
+
+    .invoice .table-row {
+        margin-left: -15px;
+        margin-right: -15px;
+        /*margin-top: 25px;*/
+    }
+
+    .invoice .payment-info {
+        font-weight: 500;
+    }
+
+    . /*invoice .table-row .table > thead {
+        border-top: 1px solid #ddd;
+    }*/
+    .invoice .table-row .table > thead > tr > th {
+        border-bottom: none;
+    }
+
+    .invoice .table > tbody > tr > td {
+        padding: 8px 20px;
+    }
+
+    .invoice .invoice-total {
+        margin-right: -10px;
+        font-size: 16px;
+    }
+
+    .invoice .last-row {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .invoice-ribbon {
+        width: 85px;
+        height: 88px;
+        overflow: hidden;
+        position: absolute;
+        top: -1px;
+        right: 14px;
+    }
+
+    .ribbon-inner {
+        text-align: center;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        position: relative;
+        padding: 7px 0;
+        left: -5px;
+        top: 11px;
+        width: 120px;
+        background-color: #66c591;
+        font-size: 15px;
+        color: #fff;
+    }
+
+        .ribbon-inner:before, .ribbon-inner:after {
+            content: "";
+            position: absolute;
+        }
+
+        .ribbon-inner:before {
+            left: 0;
+        }
+
+        .ribbon-inner:after {
+            right: 0;
+        }
+
+    .invoice-detail-quote {
+        order: 0;
+    }
+
+    @@media(max-width:575px) {
+        .invoice .top-left, .invoice .top-right, .invoice .payment-details {
+            text-align: center;
+        }
+
+        .invoice-detail-quote {
+            order: 1;
+        }
+
+        .invoice .from, .invoice .to, .invoice .payment-details {
+            float: none;
+            /*width: 100%;*/
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+            .invoice p.lead, .invoice .from p.lead, .invoice .to p.lead, .invoice .payment-details p.lead {
+                font-size: 22px;
+            }
+
+        .invoice .btn {
+            margin-top: 10px;
+        }
+
+        .invoice .table-row {
+            margin-left: 0.5em;
+            margin-right: 0.5em;
+        }
+    }
+
+    input {
+        height: 1em;
+        width: 1em;
+        vertical-align: middle;
+    }
+
+    .new-link {
+        text-decoration: underline;
+    }
+
+        .new-link:hover {
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+    #signature img, #signature .change-signature, .has-sign canvas {
+        display: none;
+    }
+
+    #signature.has-sign img, #signature.has-sign a {
+        display: initial;
+    }
+
+    .label-signature {
+        margin-left: 16px;
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) > * {
+        background-color: #d9ead3;
+    }
+
+    .title-secondary-box-review {
+        color: #006400;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    .hr-box-review {
+        background-color: green;
+    }
+
+    .this-value {
+        font-size: 12px;
+        color: green;
+        font-weight: bold;
+    }
+
+    .img-signature {
+        width: 200px;
+    }
+
+    .button-box-quote {
+        padding: 25px !important;
+        padding-top: 10px !important;
+        margin-top: 5px !important;
+        margin-left: 5px !important;
+    }
+
+    @@media(max-width: 768px) {
+        .label-quote-status {
+            float: left !important;
+            text-align: left !important;
+            margin-left: 5px !important;
+        }
+    }
+</style>
+
+<script>
+
+    function changeSignature(ev) {
+        ev.preventDefault()
+        $("#signature")[0].classList.remove('has-sign');
+        $("#reset-canvas")[0].classList.remove('d-none');
+        $("#signature-message").text("@TEXT_WITHOUT_SIGNATURE");
+        $("#label-signature").text("@LABEL_WITHOUT_SIGNATURE");
+
+        $("#SignatureModal").attr("action", "/Home/UpdateSignature")
+    }
+
+    function SignatureModal() {
+        const hasSignature = @hasSignature.ToString().ToLower();
+
+        if (hasSignature) {
+            $("#SignatureModal").modal("show");
+            $("#signature")[0].classList.add('has-sign');
+            $("#SignatureModal").attr("action", "/Home/BoxReviewPost")
+            loadCanvas()
+        } else {
+            $("#SignatureModal").modal("show");
+            $("#SignatureModal").attr("action", "/Home/UpdateSignature")
+            loadCanvas()
+        }
+
+    }
+
+    function resetCanvas(ev) {
+        ev.preventDefault()
+
+            @{
+                 if (hasSignature)
+                 {
+
+                 @:$("#signature")[0].classList.add('has-sign');
+                @:$("#reset-canvas")[0].classList.add('d-none');
+                @:$("#signature-message").text("@TEXT_WITHOUT_SIGNATURE");
+                @:$("#label-signature").text("@LABEL_WITHOUT_SIGNATURE");
+
+                 }
+    }
+        userIsChangingSignature = true;
+        const canvas = document.querySelector("canvas");
+        const signaturePad = new SignaturePad(canvas);
+    }
+    function ShowTermsAndConditionsModal(src) {
+        $("#TermsAndConditions").modal("show");
+        pdfIframe.src = src;
+    }
+
+    $(function () {
+        $('#taccheck').click(function () {
+            if ($(this).is(':checked')) {
+                $('#button-sign-send').removeAttr('disabled');
+            } else {
+                $('#button-sign-send').attr('disabled', 'disabled');
+            }
+        });
+    });
+</script>
+
+<script>
+    function loadCanvas() {
+        $('#SignatureModal').one('shown.bs.modal', function (e) {
+            const canvas = document.querySelector("canvas");
+            canvas.width = $("#signature").width()
+            const signaturePad = new SignaturePad(canvas);
+
+            const form = document.querySelector('form#SignatureModal');
+            form.onsubmit = ev => {
+                if (signaturePad.isEmpty()) return;
+                ev.preventDefault();
+
+                fetch(signaturePad.toDataURL()).then(x => x.blob()).then(blob => {
+                    const list = new DataTransfer();
+                    const file = new File([blob], "signature.png");
+                    list.items.add(file);
+                    form.querySelector('[type="file"]').files = list.files;
+                    form.submit();
+                });
+            };
+            @userIsChangingSignature = false;
+
+        }).one('hidden.bs.modal', function (e) {
+            const canvas = document.querySelector("canvas");
+            const signaturePad = new SignaturePad(canvas);
+            @userIsChangingSignature = false;
+
+             @{
+                 if (hasSignature)
+                 {
+
+                 @:$("#signature")[0].classList.add('has-sign');
+                @:$("#reset-canvas")[0].classList.add('d-none');
+                @:$("#signature-message").text("@TEXT_WITHOUT_SIGNATURE");
+                @:$("#label-signature").text("@LABEL_WITHOUT_SIGNATURE");
+
+                 }
+            }
+
+        }).modal();
+    }
+</script>
+<div role="main" class="main">
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Quote Review</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="@Url.Action("UserProfile","Home")">User Profile</a></li>
+                        <li class="active">Quote Review</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container bootstrap snippets bootdeys">
+        <div class="row">
+
+            <div class="col-sm-12 from mb-4 mt-0">
+                <input type="button" value="Create new Quote" class="btn btn-primary btn-modern float-sm-start float-md-end w-auto pb-1 button-box-quote" data-loading-text="Loading..." onclick="location.href='@Url.Action("TradeInLocation","Home")'">
+                <input type="button" class="btn btn-default float-md-end float-sm-start px-2 py-3 w-auto pb-2 button-box-quote" onclick="location.href='@Url.Action("BoxList","Home")'" value="See all quotes" />
+            </div>
+
+            <div class="col-sm-12">
+                <div class="panel panel-default invoice" id="invoice">
+                    <div class="panel-body">
+                        <div class="row mb-5" style="background: #f7f7f7 !important;">
+                            <div class="col-sm-6 invoice-detail-quote">
+                                <p class="mt-3 lead"><b>Quote#:</b> @cart.iQuoteNumber</p>
+                                <p class="lead">@ViewBag.institutionName</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 top-right">
+                                <img class="p-3" src="~/Porto/img/logo-default-slim.png" alt="Tech Trade Up" width="250" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8 from">
+                                <p><b>Quote Created:</b> @Model.FirstOrDefault().creationDate.ToLongDateString()</p>
+                                <p><b>Quote Expiration:</b> <span class=@(isQuoteExpired && !isQuoteSigned ? expiredCssClass : "")> @dateExpiration.ToLongDateString() </span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-4 mb-4 mt-0 align-self-end">
+                                @if (isQuoteExpired && !isQuoteSigned)
+                                {
+                                    <h4 class="text-color-danger font-weight-bold float-sm-start float-md-end float-lg-end float-xl-end float-sm-start w-100 text-right label-quote-status">QUOTE EXPIRED</h4>
+
+                                    using (Html.BeginForm("UpdateQuoteExpiredPost", "Home", FormMethod.Post))
+                                    {
+                                        @Html.Hidden("iCartID", slTradeIn.Help.SessionTradeIn.iCartID);
+                                        <input type="submit" class="btn btn-default float-md-end float-lg-end float-xl-end float-sm-start w-auto button-box-quote" value="Refresh quote prices" />
+                                    }
+                                }
+                                else
+                                {
+                                    string classStatus = cart.iBoxStatusID == Constants.QUOTE_SIGNED ? "text-color-primary" : "text-color-default";
+
+                                    <h4 class="@classStatus font-weight-bold float-sm-start float-md-end float-lg-end float-xl-end float-sm-start w-100 text-right label-quote-status">@status.ToUpper()</h4>
+                                }
+                            </div>
+
+                        </div>
+
+                        <div class="mt-3"></div>
+
+                        <div class="row table-row table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width:5%">OEM</th>
+                                        <th style="width:14%">MODEL</th>
+                                        <th class="" style="width:47%">CONFIGURATION</th>
+                                        <th class="text-right" style="width:10%">QTY</th>
+                                        <th class="text-right" style="width:8%">GRADE</th>
+                                        <th class="text-right" style="width:16%">TRADING PRICE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        totalValue += item.total;
+                                        <tr>
+                                            <td class="text-center">@item.manufacturer</td>
+                                            <td>@item.model</td>
+                                            <td class="">
+                                                @item.processorGen,
+                                                @item.processorType,
+                                                @item.memory,
+                                                @item.hdd
+                                            </td>
+                                            <td class="text-right">@item.quantity</td>
+                                            <td class="text-right">@item.grade</td>
+                                            <td class="text-right">@string.Format("{0:C}", item.price)</td>
+                                        </tr>
+                                    }
+
+                                    <tr>
+                                        <td style="font-weight: bold;" class="text-right" colspan="5">**TOTAL</td>
+                                        <td class="text-right">@string.Format("{0:C}", totalValue)</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-12 from">
+                                <p class="this-value">**This value is calculated in base of the condition of the device selected by the client.</p>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12 from">
+                                <p class="title-secondary-box-review">OPTIONAL SERVICES</p>
+                            </div>
+                            <hr class="hr-box-review" />
+                        </div>
+
+
+                        <div class="row table-row table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width:40%">
+                                            Services
+                                        </th>
+                                        <th style="width:45">Detail</th>
+                                        <th style="width:15%">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left">
+                                            Serialized Asset Report
+                                        </td>
+                                        <td>@selectedTextSerializedReport</td>
+                                        <td class="text-right">@string.Format("{0:C}", cart.mTotalSerializedReport)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">
+                                            Shipping
+                                        </td>
+                                        <td>@selectedTextShippingType</td>
+                                        <td class="text-right">@string.Format("{0:C}", cart.mTotalShipping)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">
+                                            DoD
+                                        </td>
+                                        <td>Data Erasure Certificate</td>
+                                        <td class="text-right">@String.Format("{0:C}", cart.mTotalDOD)</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="row table-row table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:90%">
+                                            <p class="title-secondary-box-review text-right">TRADE-IN VALUE</p>
+                                        </th>
+                                        <th style="width:10%">
+                                            <p class="text-color-black text-right">@string.Format("{0:C}", totalValue - (cart.mTotalDOD + cart.mTotalSerializedReport + cart.mTotalShipping))*</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="row">
+                                <div class="col-12 from">
+                                    <p class="this-value bg-white">*The value provided is based on the equipment's condition and compliance with the specified grading standards. If the equipment does not meet these standards, the quoted value may be adjusted.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-sm-12 col-md-6 from">
+                                <p class="lead payment-info">@ViewBag.institutionName</p></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 to text-center">
+                                <p>
+                                    x.
+                                    @if (hasSignature)
+                                    {
+                                        <img src="~/Signatures/@quoteSignature" class="img-fluid img-signature" />
+                                    }
+                                    else
+                                    {
+                                        <span>No signature</span>
+                                    }
+
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-5">
+
+                            <div class="col-sm-12 col-md-4 from">
+                                <p class="lead payment-info">@ViewBag.fullName</p>
+                            </div>
+
+                            <div class="col-sm-12 col-md-4 to">
+                                <p class="lead payment-info text-center">@ViewBag.userTitle</p>
+
+                            </div>
+
+                            <div class="col-sm-12 text-right payment-details col-md-4">
+                                <p class="lead payment-info text-center">@Model.FirstOrDefault().creationDate.ToString("MM/dd/yyyy")</p>
+                            </div>
+
+                        </div>
+
+                        @if (cart.bDateSigned == null && !isQuoteExpired)
+                        {
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <p style="font-size: 12px" class="text-center"><strong>By signing Above, @ViewBag.fullName has received and accepted the above quote submitted by PlanITROI INC.<br>All information in this quote is confidential and the property of PlanITROI,INC.</strong></p>
+                                </div>
+                            </div>
+                            <div class="row mb-5">
+                                <section class="col-xs-12 text-center">
+                                    <label for="taccheck" class="tacbox">
+                                        <input id="taccheck" type="checkbox" />
+                                        I agree to these
+                                    </label> <i class="new-link" onclick="ShowTermsAndConditionsModal('/Content/TermsandConditionTTU.pdf');">Terms and Conditions</i>
+                                </section>
+                                <div class="col-xs-1 text-center mt-3">
+                                    <button class="btn btn-primary" id="button-sign-send" disabled onclick="SignatureModal();">Sign and Send</button>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="modal fade" id="TermsAndConditions" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="largeModalLabel">
+                        Terms and Conditions
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="pdfIframe" width="100%" height="450px">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    @using (Html.BeginForm("BoxReviewPost", "Home", FormMethod.Post, new { @class = "modal fade", enctype = "multipart/form-data", id = "SignatureModal" }))
+    {
+        @Html.Hidden("iUserID", slTradeIn.Help.SessionTradeIn.iUserID);
+        @Html.Hidden("iCartID", slTradeIn.Help.SessionTradeIn.iCartID);
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="largeModalLabel">Add your signature</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="m-0" id="signature-message">@(hasSignature ? @TEXT_WITH_SIGNATURE : @TEXT_WITHOUT_SIGNATURE)</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="signature" class="form-group col-lg-12 @(string.IsNullOrEmpty(quoteSignature) ? "" : "has-sign") ">
+                            <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">
+                                Signature <a href="#" class="change-signature" onclick="changeSignature(event)">(Edit)</a>
+                                <a href="#" id="reset-canvas" class="@((!hasSignature || userIsChangingSignature) ? "" : "d-none")" onclick="resetCanvas(event)">(Cancel)</a>
+                            </label>
+                            <div class="col-lg-12 col-xs-12">
+                                <img src="~/Signatures/@quoteSignature" alt="" />
+                                <canvas style="border: 1px solid #ddd;"></canvas>
+                                <input type="hidden" name="vImageName" />
+                                <input type="file" name="file" hidden />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <label class="text-left text-2 label-signature" id="label-signature">@(hasSignature ? LABEL_WITH_SIGNATURE : LABEL_WITHOUT_SIGNATURE)</label>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+

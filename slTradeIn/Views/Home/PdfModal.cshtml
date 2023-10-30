@@ -1,0 +1,26 @@
+﻿<script>
+    function ShowPdfModal(src) {
+        $("#PdfModal").modal("show");
+        pdfIframe.src = src;
+    }
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="PdfModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">
+                    Guide
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfIframe" width="100%" height="450px">
+
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+

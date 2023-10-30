@@ -1,0 +1,112 @@
+﻿@model slTradeIn.Models.BeforeTradeInModel
+<script>
+    function ShowEnviromentalModal() {
+        $("#EnviromentalModal").modal("show");
+    }
+    function ShowLogisticModal() {
+        $("#LogisticModal").modal("show");
+    }
+</script>
+<style>
+    .shipping-types {
+        display: flex;
+    }
+
+    .shipping-types img {
+        max-width: 100%;
+    }
+
+    .shipping-types > div {
+        width: 33.33%;
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #aaa;
+        margin: 0 5px;
+    }
+</style>
+<div class="modal fade" id="EnviromentalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">Sample Reports</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <img class="text-center" width="100%" src="~/Content/Images/Img/Enviromental.png" />
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="LogisticModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">
+                    Which shipping method would you prefer?
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body shipping-types">
+                <div>
+                    <img src="~/Content/Images/Shipping/Picture1.png" alt="" style="margin: 30px 0;">
+                    <h4>I pack and ship</h4>
+                    You pack all your devices and send it to our office.
+                    <strong>
+                        *If you do not have the packaging materials we can send them to you.
+                    </strong>
+                </div>
+                <div>
+                    <img src="~/Content/Images/Shipping/Picture2.png" alt="">
+                    <h4>
+                        I would pack and Tech Trade Up came to pick them
+                    </h4>
+                        Tech Trade Up provide you all the necessary materials for you to pack the devices,
+                        and us will handle the pick-up.
+                    <strong>*If you do not have the packaging materials we can send them to you.</strong>
+                </div>
+                <div>
+                    <img src="~/Content/Images/Shipping/Picture3.png" alt="">
+                    <h4>Pick, pack and ship</h4>
+                    <p>
+                        All the work will be taken care of by Tech Trade Up.
+                        They will pick up, pack, and ship your devices for you.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div role="main" class="main">
+
+        <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 align-self-center p-static order-2 text-center">
+                        <h1 class="font-weight-bold text-dark">Before we start the Trade-In</h1>
+                    </div>
+                    <div class="col-md-12 align-self-center order-1">
+                        <ul class="breadcrumb d-block text-center">
+                            <li><a href="@Url.Action("UserProfile","Home")">User Profile</a></li>
+                            <li class="active">Trade-In</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container pt-3 pb-2">
+            @Html.Partial("~/Views/ManualQuote/_ShippingForm.cshtml", Model)
+        </div>
+    </div>

@@ -1,0 +1,109 @@
+﻿<script>
+    function ShowConditionsModal() {
+        $("#ConditionsModal").modal("show");
+    }
+
+    $(() => {
+        document.querySelectorAll('.conditions-modal h4').forEach((el, i) => {
+            el.onclick = () => {
+                document.querySelector('.conditions-modal').dataset.tab = i;
+            };
+        });
+    });
+</script>
+
+<style>
+    .conditions-modal {
+        text-align: left;
+    }
+
+    .conditions-modal img {
+        max-width: 100%;
+    }
+
+    .conditions-modal h4 {
+        cursor: pointer;
+    }
+
+    .description {
+        display: none;
+    }
+
+    .conditions-modal[data-tab="0"] .col-md-3:nth-child(1),
+    .conditions-modal[data-tab="1"] .col-md-3:nth-child(2),
+    .conditions-modal[data-tab="2"] .col-md-3:nth-child(3),
+    .conditions-modal[data-tab="3"] .col-md-3:nth-child(4) {
+        border-bottom: 3px solid black;
+    }
+
+    .conditions-modal[data-tab="0"] .description-A,
+    .conditions-modal[data-tab="1"] .description-B,
+    .conditions-modal[data-tab="2"] .description-C,
+    .conditions-modal[data-tab="3"] .description-D {
+        display: block;
+    }
+
+    #selectedGrade {
+        margin-bottom: 30px;
+    }
+
+    #selectedGrade img {
+        max-width: 400px;
+    }
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="ConditionsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">
+                    Conditions example
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body conditions-modal" data-tab="0">
+                <div class="row" style="text-align: center;">
+                    <div class="col-md-3"><h4>A</h4></div>
+                    <div class="col-md-3"><h4>B</h4></div>
+                    <div class="col-md-3"><h4>C</h4></div>
+                    <div class="col-md-3"><h4>D</h4></div>
+                </div>
+
+                <div class="description description-A">
+                    <img src="~/Content/Condition/Grade A.png" alt="">
+                    100% complete in its original box, packaging, and with all OS Licensing and accessories
+                </div>
+                <div class="description description-B">
+                    <img src="~/Content/Condition/Grade B.png" alt="">
+                    <div>
+                        100% functional, original battery above 80% capacity.
+                        Device is complete with all its original components and accessories
+                        It is allowed to have repairable minor blemishes.<br />
+                        <strong>Acceptable example:</strong> case scratches no more than one inch in length <br />
+                        <strong>Not acceptable example:</strong> case cracks or screen scratches or blemishes
+                    </div>
+                </div>
+                <div class="description description-C">
+                    <img src="~/Content/Condition/Grade C.png" alt="">
+                    <div>
+                        Device is Grade “C” and 100% functional, is complete with all its original components and accessories.
+                        Is in FAIR cosmetic condition with more wear & tear and suitable for use as a Scratch & Dent device.<br />
+                        <strong>Acceptable examples:</strong> case may have scratches, discoloration and dents.  Screen minor light scratches no more than 3 and not larger than one inch.<br />
+                        <strong>Not Acceptable Case examples:</strong> cracks, missing case sections, missing parts essential to the device<br />
+                        <strong>Not Acceptable Screen examples:</strong> spots, burns, lines, shadows and ununiform color and brightness
+                    </div>
+                </div>
+                <div class="description description-D">
+                    <img src="~/Content/Condition/Grade D.png" alt="">
+                    <div>
+                        May or may not be functional due to missing and/or damaged major components such as: memory, hard drive, battery, keyboard keys, touchpad, Wi-Fi, video, touchscreen, hinges.
+                        Have large cracks and/or exposed internal components.
+                        Device with major screen blemishes and scratches.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

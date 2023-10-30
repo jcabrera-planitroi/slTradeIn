@@ -1,0 +1,166 @@
+﻿@model slTradeIn.Models.TradeInModel
+@using slTradeIn.Controllers
+<script>
+    function modalConfirmation() {
+         $.ajax({
+             url: '@Url.Action("QuoteCount", "ManualQuote")',
+             success: function (data) {
+                    if (data == 0) {
+                        var href = $('#confirm').attr('href');
+                        window.location.href = href
+                    }
+                    else {
+                        $('#count').html(data);
+                        ModalToggle();                        
+                    }
+                },
+         });
+    }
+    function ModalToggle() {
+        $('#confirmation').modal('toggle');
+    }
+</script>
+
+<div role="main" class="main">
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Select a category</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="@Url.Action("UserProfile", "Home")">User Profile</a></li>
+                        <li class="active">Trade-In</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container py-2">
+
+
+
+        <div class="row">
+            <div class="col-sm-12 mb-4 mt-0 text-right">
+                <a href="/Home/BeforeTradeIn" class="btn btn-default btn-modern"><i class="fas fa-arrow-left ms-1"></i> Back </a>
+            </div>
+        </div>
+        <div class="alert alert-warning">
+            <p>If you don't see yours here! Click <a class="alert-link" onclick="modalConfirmation();">Here</a>.</p>
+        </div>
+
+
+
+        <div class="row">
+
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectCategory","Home",new {Category = "MacBook"})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="MacBook">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Categories/MacBook.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">MacBook</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectCategory","Home",new {Category = "iMac"})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="iMac">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Categories/iMac.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">iMac</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectCategory","Home",new {Category = "Mac"})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="Mac">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Categories/Mac.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">Mac</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectCategory","Home",new {Category = "iPad"})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="iPad">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Categories/iPad.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">iPad</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectCategory","Home",new {Category = "Notebooks"})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="Notebooks">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Categories/Laptop.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">Notebooks</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectCategory","Home",new {Category = "AllInOne"})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="All In One">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Categories/AllInOne.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">All In One</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectCategory","Home",new {Category = "PC"})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="PC">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Categories/Desktop.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">PC</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectCategory","Home",new {Category = "Chromebooks"})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="Chromebooks">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Categories/Chromebook.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">Chromebooks</span>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Do you want to continue?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" onclick="ModalToggle();">×</button>
+            </div>
+            <div class="modal-body">
+                <label id="Message">We are redirecting you to another page to create a custom quote, currently you have <label id="count"></label> items in your current quote you can always access this quote from the icon at the top <img src="~/Content/Images/Menu.png" class="text-center" alt="Menu"><br />Do you want to continue with the custom quote?</label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true" onclick="ModalToggle();">Close</button>
+                <a id="confirm" href="@Url.Action("Edit","ManualQuote")" class="alert-link">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>

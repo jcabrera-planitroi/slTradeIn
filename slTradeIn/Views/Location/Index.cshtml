@@ -1,0 +1,247 @@
+﻿@model slTradeIn.Models.RegisterUserModel
+
+<script>
+    const fillForm = location => {
+        document.getElementById("LocationLabel").setAttribute('value', location.vLocationLabel);
+        document.getElementById("LocationEmail").setAttribute('value', location.vLocationEmail);
+        document.getElementById("ContactPerson").setAttribute('value', location.vLocationContactPerson);
+        document.getElementById("StreetAddress").setAttribute('value', location.vLocationStreetAddress);
+        document.getElementById("SuiteApt").setAttribute('value', location.vSuiteAppt);
+        document.getElementById("City").setAttribute('value', location.vCity);
+        document.getElementById("State").setAttribute('value', location.vState);
+        document.getElementById("PostalCode").setAttribute('value', location.vPostalCode);
+    };
+
+    function ShowNewLocationModal(iLogisticID) {
+        $("#iLogisticID").val(iLogisticID);
+        NewLocationModal.dataset.quotes = 0;
+        NewLocationModal.dataset.logistic = iLogisticID;
+
+        if(iLogisticID == "0")
+        {
+            fillForm( new Proxy({}, { get: () => '' }) );
+        }
+        else
+        {
+            var Data = { iLogisticID: iLogisticID };
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(Data),
+                url: '@Url.Action("GetInfoLocation", "Location")',
+                async: false,
+                bDeferRender: true,
+                bProcessing: true,
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data == null) return;
+                    const { location, quotes } = data;
+                    fillForm(location);
+
+                    locationQuotes.querySelector('tbody').innerHTML = quotes.map(quote => `
+                        <tr>
+                            <td>
+                                ${quote.vLocationLabel}
+                            </td>
+                            <td>
+                                ${quote.vLocationContactPerson}
+                            </td>
+                            <td>
+                                ${quote.TextDateCreated}
+                            </td>
+                        </tr>
+                    `).join('');
+
+                    NewLocationModal.dataset.quotes = quotes.length;
+                },
+            });
+        }
+
+        $("#NewLocationModal").modal("show");
+    }
+
+    function DeleteLocation() {
+        var Data = {
+            iLogisticID: $("#iLogisticID").val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(Data),
+            url: '@Url.Action("DeleteLocation", "Location")',
+            async: false,
+            bDeferRender: true,
+            bProcessing: true,
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                location.reload();
+            }
+        });
+    }
+
+    $(() => {
+        const form = document.querySelector('form');
+
+        form.onsubmit = ev => {
+            ev.preventDefault();
+
+            const options = { method: form.method, body: new FormData(form) };
+            fetch(form.action, options).then(() => {
+                location.reload();
+            });
+        };
+    });
+</script>
+
+<div role="main" class="main">
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Locations</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="@Url.Action("UserProfile","Home")">User Profile</a></li>
+                        <li class="active">Locations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pt-3 pb-2">
+        @using (Html.BeginForm("TradeInLocation", "Home", FormMethod.Post, new { @class = "needs-validation" }))
+        {
+            @Html.HiddenFor(q => q.iLogisticID, new { id = "iLogisticID" });
+
+            <div class="modal fade" id="NewLocationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="largeModalLabel">Location</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-lg-12 p-lg-2">
+                                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Location Label</label>
+                                    <div class="col-lg-12">
+                                        <input id="LocationLabel" class="form-control text-3 h-auto py-2" type="text" name="LocationLabel" value="@Model.LocationLabel" required>
+                                    </div>
+                                </div>
+                                <div class="form-group  col-lg-6">
+                                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Location Email</label>
+                                    <div class="col-lg-12">
+                                        <input id="LocationEmail" class="form-control text-3 h-auto py-2" type="text" name="LocationEmail" value="@Model.LocationEmail" required>
+                                    </div>
+                                </div>
+                                <div class="form-group  col-lg-6">
+                                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Contact Person</label>
+                                    <div class="col-lg-12">
+                                        <input id="ContactPerson" class="form-control text-3 h-auto py-2" type="text" name="ContactPerson" value="@Model.ContactPerson" required>
+                                    </div>
+                                </div>
+                                <div class="form-group  col-lg-6">
+                                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Street Address</label>
+                                    <div class="col-lg-12">
+                                        <input id="StreetAddress" class="form-control text-3 h-auto py-2" type="text" name="StreetAddress" value="@Model.StreetAddress" required>
+                                    </div>
+                                </div>
+                                <div class="form-group  col-lg-6">
+                                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Suite/Apt#</label>
+                                    <div class="col-lg-12">
+                                        <input id="SuiteApt" class="form-control text-3 h-auto py-2" type="text" name="SuiteApt" value="@Model.SuiteApt" required>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">City</label>
+                                    <div class="col-lg-12">
+                                        <input id="City" class="form-control text-3 h-auto py-2" type="text" name="City" value="@Model.City" required>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">State</label>
+                                    <div class="col-lg-12">
+                                        <input id="State" class="form-control text-3 h-auto py-2" type="text" name="State" value="@Model.State" required>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Postal Code</label>
+                                    <div class="col-lg-12">
+                                        <input id="PostalCode" class="form-control text-3 h-auto py-2" type="text" name="PostalCode" value="@Model.PostalCode" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="locationQuotes" class="row">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Location</th>
+                                            <th>Contact Person</th>
+                                            <th>Date Created</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" value="Delete" class="btn btn-danger" data-loading-text="Loading..." onclick="DeleteLocation();" id="btnDeleteLocation">
+                            <input type="submit" value="Save" class="btn btn-primary" data-loading-text="Loading...">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-lg-9">
+
+                </div>
+                <div class="form-group col-lg-3">
+                    <input
+                        type="button"
+                        value="Add new location"
+                        class="btn btn-primary"
+                        data-loading-text="Loading..."
+                        onclick="ShowNewLocationModal(0);">
+                    <a href="@Url.Action("UserProfile", "Home")" class="btn btn-default">
+                        Edit profile
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                @{
+                    int iCounter = 0;
+                }
+                @foreach (var item in Model.LocationDetail.ToList())
+                {
+
+                    if (iCounter > 0 && iCounter % 3 == 0)
+                    {
+                        <hr style="clear: both;  visibility: hidden;" />
+                    }
+                    <div class="col-md-6 col-lg-4 mb-5 mb-lg-0 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="100" style="animation-delay: 100ms;">
+                        <div class="card card-background-image-hover border-0" style="background-image: url(/Porto/img/blog/square/Locationbg.png);">
+                            <div class="card-body text-center p-5">
+                                <i class="icon-location-pin icons text-color-primary text-10"></i>
+                                <h4 class="card-title mt-2 mb-2 text-5 font-weight-bold">@item.vLocationLabel</h4>
+                                <p class="card-text">@item.vLocationContactPerson</p>
+                                <p class="card-text">@item.vCity - @item.vState - @item.vPostalCode</p>
+                                <input type="button" value="View" class="btn btn-default" data-loading-text="Loading..." onclick="ShowNewLocationModal(@item.iLogisticID);">
+                            </div>
+                        </div>
+                    </div>
+                    iCounter = iCounter + 1;
+                }
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,97 @@
+﻿<style>
+    .shipping-types {
+        display: flex;
+    }
+
+        .shipping-types img {
+            max-width: 100%;
+        }
+
+        .shipping-types > div {
+            width: 33.33%;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #aaa;
+            margin: 0 5px;
+        }
+</style>
+
+<div class="modal fade" id="EnviromentalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">Why do you need a serialized asset report?</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div class="row">
+                    <h4></h4>
+                    <div style="display: flex;">
+                        <div style="padding-right: 15px;">
+                            <p>
+                                Gain transparency into your computer's lifecycle and reduce electronic waste.<br />
+                                The Serialized  Asset report shows <strong>key stages</strong>, including manufacturing,
+                                transportation, usage, and end-of-life.<br />
+                                Understand your computer's environmental impact and
+                                make informed decisions for a sustainable future.
+                            </p>
+                            <img src="~/Content/Images/Env1.png"
+                                 alt="Alternate Text" style="display: block; width: 150px; margin: auto;" />
+                        </div>
+                        <div style="padding-left: 15px;">
+                            <p>
+                                <strong>Be Part of the Circular Economy</strong>
+                                and minimize electronic waste through refurbishment and recycling.
+                            </p>
+                            <img src="~/Content/Images/Env2.png"
+                                 e3alt="Alternate Text" style="display: block; width: 150px; margin: auto;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="LogisticModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">
+                    What is your preferred logistic option?
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body shipping-types">
+                <div>
+                    <img src="~/Content/Images/Shipping/Picture1.png" alt="" style="margin: 30px 0;">
+                    <h4>
+                        TechTrade Up provide you a full logistic solution
+                    </h4>
+                    All the work will be taken care of by Tech Trade Up.
+                    They will pick up, pack, and ship your devices for you.
+                </div>
+                <div>
+                    <img src="~/Content/Images/Shipping/Picture2.png" alt="">
+                    <h4>
+                        Tech Trade Up help with transportation only
+                    </h4>
+                    Tech Trade Up will handle the pick-up.
+                </div>
+                <div>
+                    <img src="~/Content/Images/Shipping/Picture3.png" alt="">
+                    <h4>
+                        The client handle the logistic
+                    </h4>
+                    Tech Trade Up provide you the address and you send the items to our office.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

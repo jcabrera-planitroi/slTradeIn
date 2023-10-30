@@ -1,0 +1,195 @@
+﻿@model slTradeIn.Models.RegisterUserModel
+
+
+<div role="main" class="main">
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Create a profile</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li class="active">Trade-In</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pt-3 pb-2">
+        @using (Html.BeginForm(
+            "Index", 
+            "Home",
+            new { TP = Context.Request.Query["TP"].ToString() },
+            FormMethod.Post,
+            true,
+            new { @class = "needs-validation" }
+        ))
+        {
+            if (ViewBag.Message != null)
+            {
+                <div class="alert alert-warning">
+                    Email already registered! Please <a href="@Url.Action("Login","Home")" class="alert-link">Login</a>.
+                </div>
+            }
+
+            <div class="row pt-2">
+
+                <div class="col-lg-6">
+                    <h4>Account Information</h4>
+                    <hr />
+
+                    <div class="form-group">
+                        <label class="col-lg-4 col-form-label form-control-label line-height-9 pt-2 text-2 required">Email</label>
+                        <div class="col-lg-12">
+                            <input class="form-control text-3 h-auto py-2" type="text" name="Email" value="@Model.Email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 col-form-label form-control-label line-height-9 pt-2 text-2 required">Password</label>
+                        <div class="col-lg-12">
+                            <input class="form-control text-3 h-auto py-2" type="password" name="Password" value="@Model.Password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 col-form-label form-control-label line-height-9 pt-2 text-2 required">Confirm Password</label>
+                        <div class="col-lg-12">
+                            <input class="form-control text-3 h-auto py-2" type="password" name="ConfirmPassword" value="@Model.ConfirmPassword" required>
+                        </div>
+                    </div>
+
+                    @if (Context.Request.Query["TP"].ToString() != null)
+                    {
+                        <div class="form-group">
+                            <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Technology Partner</label>
+                            <div class="col-lg-12">
+                                <select class="form-select form-control h-auto py-2" data-msg-required="Technology Partner is required" name="iTTUTechPartner" required>
+                                    <option value="">None</option>
+                                    @foreach (var item in ViewBag.ListPartner)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-lg-6">
+                    <h4>Already have an account?</h4>
+                    <hr />
+                    <div class="d-flex justify-content-center align-items-center">
+                        <input type="button" class="btn btn-default btn-modern float-start" onclick="location.href='@Url.Action("Login","Home")'" value="Login" />
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <h4>Contact Information</h4>
+                <hr />
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">First Name</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="FirstName" value="@Model.FirstName" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Last Name</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="LastName" value="@Model.LastName" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Title</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="Title" value="@Model.Title">
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2">Company Name</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="CompanyName" value="@Model.CompanyName">
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2">Office Phone</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="OfficePhone" value="@Model.OfficePhone">
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Extension</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="Extension" value="@Model.Extension">
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Cellphone</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="Cellphone" value="@Model.Cellphone" required>
+                    </div>
+                </div>
+                <h4>Location Information</h4>
+                <hr />
+                <div class="form-group  col-lg-12">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Location Label</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="LocationLabel" value="@Model.LocationLabel" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Location Email</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="LocationEmail" value="@Model.LocationEmail" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Contact Person</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="ContactPerson" value="@Model.ContactPerson" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Street Address</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="StreetAddress" value="@Model.StreetAddress" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Suite/Apt#</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="SuiteApt" value="@Model.SuiteApt" required>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">City</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="City" value="@Model.City" required>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">State</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="State" value="@Model.State" required>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Postal Code</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="PostalCode" value="@Model.PostalCode" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-lg-9">
+
+                </div>
+                <div class="form-group col-lg-3">
+                    <input type="submit" value="Save Profile" class="btn btn-primary btn-modern float-end" data-loading-text="Loading...">
+                </div>
+            </div>
+        }
+    </div>
+</div>

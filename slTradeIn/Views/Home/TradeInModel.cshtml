@@ -1,0 +1,128 @@
+﻿@model slTradeIn.Models.TradeInModel
+
+<style>
+    .modelBg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: white;
+        filter: grayscale() invert() opacity(0.25);
+        background-repeat: no-repeat;
+        background-size: 90%;
+        background-position: center;
+    }
+
+    .modelBg .card-body {
+        background: none;
+    }
+</style>
+
+@{ 
+    var manufacturers = new Dictionary<int, string>
+    {
+        { 169, "Acer" },
+        { 1591, "Lenovo" },
+        { 1782, "Microsoft" },
+        { 848, "Dell" },
+        { 1300, "HP" }
+    };
+}
+
+<div role="main" class="main">
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Search your model</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="@Url.Action("UserProfile","Home")">User Profile</a></li>
+                        <li class="active">Trade-In</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container py-2">
+
+        <div class="row">
+            <div class="col-sm-12 mb-4 mt-0 text-right">
+                <a href="/Home/TradeInManufacturer" class="btn btn-default btn-modern"><i class="fas fa-arrow-left ms-1"></i> Back </a>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("TradeInModel", "Home", FormMethod.Post))
+        {
+            @Html.HiddenFor(q => q.iCategory)
+            @Html.HiddenFor(q => q.iManufacturer)
+            <h4>
+                How do I find the model of my device?
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <i
+                    class="fas fa-question-circle"
+                    style="color:orange"
+                    onclick="ShowPdfModal('/Content/How do I determine the model of my device.pdf');"></i>
+            </h4>
+            <div class="row">
+                <div class="input-group mb-3">
+                    <input name="FilterWord" value="@Model.FilterWord" type="text" class="form-control" placeholder="Model" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-primary" type="submit" id="button-addon2">Search</button>
+                </div>
+            </div>
+            <div class="alert alert-warning">
+                If you don't see yours here! Click <a href="@Url.Action("Edit","ManualQuote")" class="alert-link">Here</a>.
+            </div>
+        }
+
+        @Html.Partial("~/Views/Home/PdfModal.cshtml")
+
+        <div class="row">
+            @{
+                int iCounter = 0;
+            }
+            @if (Model.ModelDetail == null)
+            {
+
+            }
+            else
+            if (Model.ModelDetail.Count == 0)
+            {
+                <h4 class="text-center">There are no results for the model @Model.FilterWord</h4>
+            }
+            else
+            {
+                foreach (var item in Model.ModelDetail.OrderBy(q => q.Model).ToList())
+                {
+
+                    if (iCounter > 0 && iCounter % 3 == 0)
+                    {
+                        <hr style="clear: both; visibility: hidden;" />
+                    }
+
+                    var manufacturer = manufacturers.ContainsKey(item.iMfg)
+                            ? manufacturers[item.iMfg] :
+                            "";
+
+                    <div class="col-md-6 col-lg-4 mb-5 mb-lg-0 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400" style="animation-delay: 400ms;">
+                        <div class="card card-background-image-hover border-0" style="position: relative;">
+                            <div
+                                 class="modelBg"
+                                 style="background-image: url(/Content/Images/Manufacturer/@(manufacturer).png);">
+                            </div>
+                            <div class="card-body text-center p-5" style="background: none;">
+                                <h4 class="card-title mt-2 mb-2 text-5 font-weight-bold">@item.Model</h4>
+                                <h4 class="font-weight-bold">@item.Category</h4>
+                                <p class="card-text">@item.Manufacturer</p>
+                                <input type="button" value="Select this Model" class="btn btn-primary" data-loading-text="Loading..." onclick="location.href='@Url.Action("SelectModel", "Home", new { Model = item.iModelID})'">
+                            </div>
+                        </div>
+                    </div>
+                    iCounter = iCounter + 1;
+                }
+            }
+        </div>
+
+    </div>
+</div>

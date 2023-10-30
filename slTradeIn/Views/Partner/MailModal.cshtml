@@ -1,0 +1,34 @@
+﻿<script>
+    function ShowMailModal() {
+        $("#MailModal").modal("show");
+    }
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="MailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Mass upload data updates</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <a href="#">
+                    [Download Template]
+                </a>
+                <br />
+                <br />
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">
+                        Excel file with email, name and group
+                    </label>
+                    <form action="@Url.Action("Excel", "Mail")" method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+                        <button class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

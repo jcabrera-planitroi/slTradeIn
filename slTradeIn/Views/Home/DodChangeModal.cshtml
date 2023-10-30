@@ -1,0 +1,54 @@
+﻿<script>
+    function ShowDodChangeModal(hasDod) {
+        $("#DodChangeModal").modal("show");
+        flexRadioDefault1.checked = !hasDod;
+        flexRadioDefault2.checked = hasDod;
+    }
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="DodChangeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">
+                    Data Destruction with Certificate
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                If you do not want the data erasure, you must sign a waiver and provide a certificate of data destruction to prove it has been wiped already
+
+                <br />
+                <br />
+
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <div class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Yes, I don’t have a certificate of data destruction, need the DOD</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <div class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>No, I already have a certificate of data destruction</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

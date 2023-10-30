@@ -1,0 +1,227 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Create a profile";
+}
+<div role="main" class="main">
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">@ViewData["Title"]</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li class="active">Trade-In</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pt-3 pb-2">
+        @using (Html.BeginForm(
+            "",
+            "",
+            new { Area = "Identity" },
+            FormMethod.Post,
+            true,
+            new { @class = "needs-validation" }
+            ))
+        {
+            if (ViewBag.Message != null)
+            {
+                <div class="alert alert-warning">
+                    Email already registered! Please <a href="@Url.Action("Login", "Home")" class="alert-link">Login</a>.
+                </div>
+            }
+
+            <div class="row pt-2">
+
+                <div class="col-lg-6">
+                    <h4>Account Information</h4>
+                    <hr/>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Email" class="col-lg-4 col-form-label form-control-label line-height-9 pt-2 text-2 required">Email</label>
+                        <div class="col-lg-12">
+                            <input class="form-control text-3 h-auto py-2" type="text" asp-for="Input.Email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 col-form-label form-control-label line-height-9 pt-2 text-2 required" asp-for="Input.Password">Password</label>
+                        <div class="col-lg-12">
+                            <input class="form-control text-3 h-auto py-2" type="password" asp-for="Input.Password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-4 col-form-label form-control-label line-height-9 pt-2 text-2 required" asp-for="Input.ConfirmPassword">Confirm Password</label>
+                        <div class="col-lg-12">
+                            <input class="form-control text-3 h-auto py-2" type="password" asp-for="Input.ConfirmPassword" required>
+                        </div>
+                    </div>
+
+                    @if (HttpContext.Request.Query["TP"].ToString().Length > 0)
+                    {
+                        <div class="form-group">
+                            <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Technology Partner</label>
+                            <div class="col-lg-12">
+                                <select class="form-select form-control h-auto py-2" data-msg-required="Technology Partner is required" name="iTTUTechPartner" required>
+                                    <option value="">None</option>
+                                    @foreach (var item in ViewBag.ListPartner)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-lg-6">
+                    <h4>Already have an account?</h4>
+                    <hr/>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <input type="button" class="btn btn-default btn-modern float-start" onclick="location.href='@Url.Action("Login", "Home")'" value="Login"/>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <h4>Contact Information</h4>
+                <hr/>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">First Name</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="FirstName" value="@Model.UserInfoModel.FirstName" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Last Name</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="LastName" value="@Model.UserInfoModel.LastName" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Title</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="Title" value="@Model.UserInfoModel.Title">
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2">Company Name</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="CompanyName" value="@Model.UserInfoModel.CompanyName">
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2">Office Phone</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="OfficePhone" value="@Model.UserInfoModel.OfficePhone">
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Extension</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="Extension" value="@Model.UserInfoModel.Extension">
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Cellphone</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="Cellphone" value="@Model.UserInfoModel.Cellphone" required>
+                    </div>
+                </div>
+                <h4>Location Information</h4>
+                <hr/>
+                <div class="form-group  col-lg-12">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Location Label</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="LocationLabel" value="@Model.UserInfoModel.LocationLabel" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Location Email</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="LocationEmail" value="@Model.UserInfoModel.LocationEmail" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Contact Person</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="ContactPerson" value="@Model.UserInfoModel.ContactPerson" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Street Address</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="StreetAddress" value="@Model.UserInfoModel.StreetAddress" required>
+                    </div>
+                </div>
+                <div class="form-group  col-lg-6">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Suite/Apt#</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="SuiteApt" value="@Model.UserInfoModel.SuiteApt" required>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">City</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="City" value="@Model.UserInfoModel.City" required>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">State</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="State" value="@Model.UserInfoModel.State" required>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Postal Code</label>
+                    <div class="col-lg-12">
+                        <input class="form-control text-3 h-auto py-2" type="text" name="PostalCode" value="@Model.UserInfoModel.PostalCode" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-lg-9">
+
+                </div>
+                <div class="form-group col-lg-3">
+                    <input type="submit" value="Save Profile" class="btn btn-primary btn-modern float-end" data-loading-text="Loading...">
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@* <div class="row"> *@
+@*     <div class="col-md-4"> *@
+@*         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post"> *@
+@*             <h2>Create a new account.</h2> *@
+@*             <hr/> *@
+@*             <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+@*             <div class="form-floating"> *@
+@*                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true"/> *@
+@*                 <label asp-for="Input.Email"></label> *@
+@*                 <span asp-validation-for="Input.Email" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-floating"> *@
+@*                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true"/> *@
+@*                 <label asp-for="Input.Password"></label> *@
+@*                 <span asp-validation-for="Input.Password" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-floating"> *@
+@*                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true"/> *@
+@*                 <label asp-for="Input.ConfirmPassword"></label> *@
+@*                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span> *@
+@*             </div> *@
+@*             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button> *@
+@*         </form> *@
+@*     </div> *@
+@* </div> *@
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

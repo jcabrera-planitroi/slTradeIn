@@ -1,0 +1,99 @@
+﻿@model slTradeIn.Models.BeforeTradeInModel
+
+@using (Html.BeginForm("BeforeTradeIn", "Home", FormMethod.Post, new { @class = "needs-validation" }))
+{
+    <div class="card mb-4" id="shippingMethod">
+        <div class="card-body">
+            <div class="row pt-2">
+                <div class="col pb-3">
+                    <h4>What is your preferred logistic option? &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-question-circle" style="color:orange" onclick="ShowLogisticModal();"></i> </h4>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td style="width:10%">
+                                    <div class="form-check">
+                                        <div class="form-check-label">
+                                            @Html.RadioButtonFor(x => x.TypeOfShipping, 1)
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td>Our Team can provide you with a full logistics solution</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <div class="form-check-label">
+                                            @Html.RadioButtonFor(x => x.TypeOfShipping, 2)
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    Our Team can help you with transportation only
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <div class="form-check-label">
+                                            @Html.RadioButtonFor(x => x.TypeOfShipping, 3)
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    If you prefer to handle the entire logistics process,
+                                    our team can provide you the address
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row pt-2">
+                <div class="col pb-3">
+
+                    <h4>Do you need a Serialized Asset Report with proof of Social and Enviromental Impact? &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-question-circle" style="color:orange" onclick="ShowEnviromentalModal();"></i> </h4>
+
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td style="width:10%">
+                                    <div class="form-check">
+                                        <div class="form-check-label">
+                                            @Html.RadioButtonFor(q => q.NeedSerializedAssetReport, true)
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td>Yes, I want to  make a positive impact with our planet showing environmental responsibility</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <div class="form-check-label">
+                                            @Html.RadioButtonFor(q => q.NeedSerializedAssetReport, false)
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>No, I'm not interested in participating in promote sustainable practices</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 mb-4 mt-0 text-right">
+
+
+            <a href="/Home/TradeInLocation" class="btn btn-default btn-modern"><i class="fas fa-arrow-left ms-1"></i> Back </a>
+            <input type="submit" value="Let's Trade-In" class="btn btn-primary btn-modern m-2" data-loading-text="Loading...">
+        </div>
+    </div>
+}

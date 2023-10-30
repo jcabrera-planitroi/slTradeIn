@@ -1,0 +1,92 @@
+﻿@model slTradeIn.Models.TradeInModel
+
+<div role="main" class="main">
+
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Select a manufacturer</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="@Url.Action("UserProfile","Home")">User Profile</a></li>
+                        <li class="active">Trade-In</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container py-2">
+
+
+        <div class="row">
+            <div class="col-sm-12 mb-4 mt-0 text-right">
+                <a href="/Home/TradeInCategory" class="btn btn-default btn-modern"><i class="fas fa-arrow-left ms-1"></i> Back </a>
+            </div>
+        </div>
+
+        <div class="alert alert-warning">
+            If you don't see yours here! Click <a href="@Url.Action("Edit","ManualQuote")" class="alert-link">Here</a>.
+        </div>
+        <div class="row">
+            <div class="col-lg-1">
+            </div>
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectManufacturer","Home",new {Category = Model.iCategory, Manufacturer = 169})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="Acer">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Manufacturer/Acer.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">Acer</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectManufacturer","Home",new {Category = Model.iCategory, Manufacturer = 1591})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="Lenovo">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Manufacturer/Lenovo.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">Lenovo</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectManufacturer","Home",new {Category = Model.iCategory, Manufacturer = 1782})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="Microsoft">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Manufacturer/Microsoft.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">Microsoft</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectManufacturer","Home",new {Category = Model.iCategory, Manufacturer = 848})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="Dell">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Manufacturer/Dell.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">Dell</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <a href="@Url.Action("SelectManufacturer","Home",new {Category = Model.iCategory, Manufacturer = 1300})">
+                    <div class="thumb-info thumb-info-floating-caption thumb-info-hide-wrapper-bg thumb-info-floating-element-wrapper" data-title="HP">
+                        <div class="thumb-info-wrapper">
+                            <img src="~/Content/Images/Manufacturer/HP.png" class="img-fluid" alt="" width="300" height="300">
+                        </div>
+                        <span class="thumb-info-floating-element thumb-info-floating-caption-title d-none">HP</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

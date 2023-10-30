@@ -1,0 +1,256 @@
+﻿@model List<slTradeIn.Help.BoxFlowItem>
+@using slTradeIn.Data
+@using slTradeIn.Models
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js"></script>
+<script>
+    const handleSelect = (row, quantity) => {
+        if (quantity >= 10) {
+            row.className = 'transformed';
+        } else {
+            row.querySelector('.text-quantity input').value = quantity;
+            row.querySelector('.save-detail').submit();
+        }
+    };
+
+    const changeDod = (row, ev) => {
+        ev.preventDefault();
+
+        const checkbox = row.querySelector('[name="bDOD"]');
+        ShowDodChangeModal(checkbox.checked);
+
+        DodChangeModal.querySelectorAll('[type="radio"]').forEach(el => {
+            el.onclick = () => {
+                checkbox.checked = flexRadioDefault1.checked;
+                row.querySelector('.save-detail').submit();
+            };
+        });
+    };
+
+    function ShowEnviromentalModal() {
+        $("#EnviromentalModal").modal("show");
+    }
+
+    function ShowLogisticModal() {
+        $("#LogisticModal").modal("show");
+    }
+
+    function continueToReview() {
+        window.location.href = "/Home/BoxReview/@slTradeIn.Help.SessionTradeIn.iCartID";
+    }
+</script>
+
+<style>
+    .text-quantity, .transformed select {
+        display: none;
+    }
+
+    .transformed .text-quantity {
+        display: flex;
+    }
+
+    td {
+        vertical-align: middle;
+    }
+
+    th {
+        text-transform: uppercase;
+    }
+
+    .totals td:nth-child(2) {
+        text-align: right;
+    }
+</style>
+
+@Html.Partial("~/Views/Home/EditBoxModal.cshtml", ViewBag.Shipping as BeforeTradeInModel)
+@Html.Partial("~/Views/Home/DodChangeModal.cshtml")
+
+<div role="main" class="main">
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">My Quote</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="@Url.Action("UserProfile","Home")">User Profile</a></li>
+                        <li class="active">Quote</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="DodInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="largeModalLabel">
+                        Example of Data Erasure Certificate
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <img class="text-center" width="100%" src="~/Content/Images/Img/dod-cert.png" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("~/Views/Home/LogisticEnviromentalModals.cshtml")
+
+    <div style="margin: 0 5%;">
+        <div class="row">
+            <div class="col-xs-12 col-lg-9" style="">
+
+                <input type="button" class="btn btn-primary btn-modern float-start" onclick="location.href='@Url.Action("TradeInCategory","Home")'" value="Add new" />
+
+                <br />
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th scope="col">Trade-in details</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">
+                                Dod <i class="fas fa-question-circle" style="color:orange" onclick="$('#DodInfoModal').modal('show');"></i>
+                            </th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.id" class="@(item.quantity >= 10 ? "transformed" : "")">
+                                <td>
+                                    <img width="80"
+                                         src="/Content/Images/Manufacturer/@(item.manufacturer).png"
+                                         alt="Alternate Text" />
+                                </td>
+                                <td>
+                                    <h4 style="margin-bottom: 0px;">@item.model</h4>
+                                    @item.processorGen,
+                                    @item.processorType,
+                                    @item.memory,
+                                    @item.hdd
+                                    <br />
+                                    <form action="@Url.Action("DeleteBox", "Home", new { id = item.id })"
+                                          method="post"
+                                          onsubmit="confirm('Are you sure you want to delete?') ? null : event.preventDefault();">
+                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+
+                                    <form class="save-detail"
+                                          id="box_@item.id"
+                                          action="@Url.Action("SaveBox", "Home", new { id = item.id })"
+                                          method="post">
+                                    </form>
+                                    <input form="box_@item.id" type="hidden" name="mPrice" value="@item.price" />
+                                    <input form="box_@item.id" type="hidden" name="iCartID" value="@item.cartId" />
+                                </td>
+                                <td>$@String.Format("{0:0,0.##}", item.price)</td>
+                                <td>
+                                    <select class="form-select" onchange="handleSelect(row_@item.id, event.target.value)" style="max-width: 100px;">
+                                        @for (var i = 5; i < 10; i++)
+                                        {
+                                            <option value="@i" selected="@(item.quantity == i)">@i</option>
+                                        }
+                                        <option value="10">+10</option>
+                                    </select>
+                                    <div class="text-quantity">
+                                        <input form="box_@item.id" name="iQuantity" class="form-control" type="number" value="@item.quantity" min="5" style="width: 70px;" />
+                                        <button form="box_@item.id" class="btn btn-primary btn-sm">Update</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input form="box_@item.id" type="checkbox" name="bDOD" class="form-check-input" checked="@item.dod" onclick="changeDod(row_@item.id, event);" />
+                                </td>
+                                <td>$@String.Format("{0:0,0.##}", @item.total)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-xs-12 col-lg-3 card" style="padding: 20px; box-shadow: #ddd 0 0 20px;">
+                <h4 style="text-align: center;">TRADE-IN SUMMARY</h4>
+
+                @{ var cart = ViewBag.Cart as Detail_TTU_userCart; }
+
+                <table class="table totals">
+                    <tr>
+                        <td>
+                            Total
+                        </td>
+                        <td>
+                            $@String.Format("{0:0,0.##}", @cart.mTotal)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fas fa-question-circle" style="color:orange" onclick="ShowEnviromentalModal();"></i> &nbsp;Serialized Asset Report
+                            <div style="font-size: 0.75em; line-height: 1; font-family: sans-serif; font-style: italic;">
+                                @(new string[] {
+                                    "No, I don't want a Serialized Asset Report",
+                                    "Yes, I want a Serialized Asset Report",
+                                }.ElementAtOrDefault(cart.bSerializedReport ? 1 : 0))
+                            </div>
+                            <a href="#" onclick="ShowEditBoxModal(true);">
+                                (Edit)
+                            </a>
+                        </td>
+                        <td style="color:red">@String.Format("{0:($0,0.##)}", cart.mTotalSerializedReport)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fas fa-question-circle" style="color:orange" onclick="ShowLogisticModal();"></i> &nbsp; Shipping
+                            <div style="font-size: 0.75em; line-height: 1; font-family: sans-serif; font-style: italic;">
+                                @(new string[] {
+                                    "We pick up your pre-packaged devices.",
+                                    "We provide all the materials for your team to pack your devices and we pick up",
+                                    "PlanITROI does all the work. We will pick, pack and ship for you",
+                                }.ElementAtOrDefault(cart.vShippingType - 1))
+                            </div>
+                            <a href="#" onclick="ShowEditBoxModal(false);">(Edit)</a>
+                        </td>
+                        <td style="color:red">@String.Format("{0:($ 0,0.##)}", cart.mTotalShipping)</td>
+                    </tr>
+                    <tr>
+                        <td>DOD</td>
+                        <td style="color:red">@String.Format("{0:($ 0,0.##)}", cart.mTotalDOD)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Total Payout</strong>
+                        </td>
+
+                        @if (cart.mTotalPayout > 0)
+                        {
+                            <td>
+                                <strong>@String.Format("{0:$ 0,0.##}", cart.mTotalPayout)</strong>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="color:red">
+                                <strong>@String.Format("{0:($ 0,0.##)}", cart.mTotalPayout)</strong>
+                            </td>
+                        }
+                    </tr>
+                </table>
+
+                <button class="btn btn-primary" onclick="continueToReview();">
+                    I LOVE IT !    WHERE DO I SIGN ?
+                </button>
+                <hr />
+                <input type="button" class="btn btn-default" onclick="location.href='@Url.Action("BoxList","Home")'" value="See all quotes" />
+            </div>
+        </div>
+    </div>
+</div>

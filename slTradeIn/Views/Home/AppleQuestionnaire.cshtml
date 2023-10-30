@@ -1,0 +1,599 @@
+﻿@model slTradeIn.Models.TradeInModel
+
+<script type="text/javascript">
+    function ShowHideDiv(DivName, ShowHide) {
+        var x = document.getElementById(DivName);
+        if (x.style.display === "none" && ShowHide == "Show") {
+            x.style.display = "block";
+        } else
+            if (x.style.display === "block" && ShowHide == "Hide") {
+                x.style.display = "none";
+            }
+    }
+
+    function GoBack() {
+        var x = document.getElementById("DivProcessorType");
+        if (x.style.display == "block") {
+            ShowHideDiv("DivProcessorType", "Hide");
+            ShowHideDiv("BtnBack", "Hide");
+            ShowHideDiv("DivIsAccesible", "Show");
+        }
+
+        x = document.getElementById("DivProcessorGeneration");
+        if (x.style.display == "block") {
+            ShowHideDiv("DivProcessorGeneration", "Hide");
+            ShowHideDiv("DivProcessorType", "Show");
+        }
+
+        x = document.getElementById("DivMemory");
+        if (x.style.display == "block") {
+            ShowHideDiv("DivMemory", "Hide");
+            ShowHideDiv("DivProcessorGeneration", "Show");
+        }
+
+        x = document.getElementById("DivStorage");
+        if (x.style.display == "block") {
+            ShowHideDiv("DivStorage", "Hide");
+            ShowHideDiv("DivMemory", "Show");
+        }
+
+        x = document.getElementById("DivGrade");
+        if (x.style.display == "block") {
+            ShowHideDiv("DivGrade", "Hide");
+            ShowHideDiv("DivStorage", "Show");
+        }
+
+        x = document.getElementById("DivQuantity");
+        if (x.style.display == "block") {
+            ShowHideDiv("DivQuantity", "Hide");
+            ShowHideDiv("DivGrade", "Show");
+            ShowHideDiv("DivGradeResultA", "Hide");
+            ShowHideDiv("DivGradeResultB", "Hide");
+            ShowHideDiv("DivGradeResultC", "Hide");
+            ShowHideDiv("DivGradeResultD", "Hide");
+            ShowHideDiv("BtnAddToBox", "Hide");
+            ShowHideDiv("BtnAddToBoxNew", "Hide");
+        }
+    }
+
+    function handleClick(myRadio) {
+        if (myRadio.name == "bIsAccesible")
+        {
+            if (myRadio.value == "True") {
+                ShowHideDiv("DivIsAccesible", "Hide");
+                ShowHideDiv("DivProcessorType", "Show");
+                ShowHideDiv("BtnBack", "Show");
+            } else {
+                ShowHideDiv("DivProcessorType", "Hide");
+                ShowNoPowerModal();
+            }
+        }
+        if (myRadio.name == "iProcessor") {
+            if (myRadio.value > 0) {
+                ShowHideDiv("DivProcessorType", "Hide");
+                ShowHideDiv("DivProcessorGeneration", "Show");
+            } else {
+                ShowHideDiv("DivProcessorGeneration", "Hide");
+            }
+        }
+
+        if (myRadio.name == "iProcessorGen") {
+            if (myRadio.value > 0) {
+                ShowHideDiv("DivProcessorGeneration", "Hide");
+                ShowHideDiv("DivMemory", "Show");
+            } else
+                ShowHideDiv("DivMemory", "Hide");
+        }
+
+        if (myRadio.name == "iMemory") {
+            if (myRadio.value > 0) {
+                ShowHideDiv("DivMemory", "Hide");
+                ShowHideDiv("DivStorage", "Show");
+            } else
+                ShowHideDiv("DivStorage", "Hide");
+        }
+
+        if (myRadio.name == "iHDD") {
+            if (myRadio.value > 0) {
+                ShowHideDiv("DivStorage", "Hide");
+                ShowHideDiv("DivGrade", "Show");
+            } else
+                ShowHideDiv("DivGrade", "Hide");
+        }
+
+        if (myRadio.name == "vGrade") {
+            ShowHideDiv("DivGrade", "Hide");
+            ShowHideDiv("DivQuantity", "Show");
+            ShowHideDiv("BtnAddToBox", "Show");
+            ShowHideDiv("BtnAddToBoxNew", "Show");
+            selectedGrade.innerHTML = document.querySelector(`.description-${myRadio.value}`).innerHTML;
+        }
+    }
+
+    $(() => {
+        const quantity = document.querySelector('[name="iQuantity"]');
+
+        BtnAddToBox.onclick = ev => {
+            if (parseInt(quantity.value) < 5) {
+                ev.preventDefault();
+                alert('You cannot TradeIn less than 5 units');
+            }
+        };
+
+        BtnAddToBoxNew.onclick = () => {
+            if (parseInt(quantity.value) < 5) {
+                alert('You cannot TradeIn less than 5 units');
+                return;
+            }
+
+            const options = { method: questionary.method, body: new FormData(questionary) };
+            fetch(questionary.action, options).then(() => {
+                location = '@Url.Action("Box", "Home")';
+            });
+        };
+    });
+</script>
+
+<div role="main" class="main">
+
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Device information</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="@Url.Action("UserProfile","Home")">User Profile</a></li>
+                        <li class="active">Trade-In</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container py-2">
+        @using (Html.BeginForm("TradeInQuestionnaire", "Home", FormMethod.Post, new { id = "questionary" }))
+        {
+            @Html.HiddenFor(q => q.iCategory)
+            @Html.HiddenFor(q => q.iManufacturer)
+            @Html.HiddenFor(q => q.iModelID)
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="col-md-12 col-lg-12 mb-5 mb-lg-0 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="100" style="animation-delay: 100ms;">
+                        <div class="card card-background-image-hover border-0" style="background-image: url(/Porto/img/blog/square/Questionnairebg.png);">
+                            <div class="card-body text-center p-5">
+                                <i class="icon-layers icons text-color-primary text-10"></i>
+                                <p class="card-text">Trade-in your</p>
+                                <h4 class="card-title mt-2 mb-2 text-5 font-weight-bold">@Model.Model</h4>
+                                <p class="card-text">@Model.Category</p>
+                                <p class="card-text">@Model.Manufacturer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="card mb-4" id="DivIsAccesible" style="display:block">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+
+                                    <h4>
+                                        Does your device power up and unlock?
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <i class="fas fa-question-circle" style="color:orange" onclick="ShowPowerUpModal();"></i>
+                                    </h4>
+
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:20%">
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.bIsAccesible, true, new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>Yes</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.bIsAccesible, false, new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>No</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @Html.Partial("~/Views/Home/PdfModal.cshtml")
+                    @Html.Partial("~/Views/Home/PowerUpModal.cshtml")
+                    @Html.Partial("~/Views/Home/NoPowerModal.cshtml")
+
+                    <div class="card mb-4" style="display:none" id="DivProcessorType">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+
+                                    <h4>What type of processor does your laptop have?</h4>
+                                    @*<p style="color:orange">
+                                        How do I determine my processor type &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <i class="fas fa-question-circle"
+                                           style="color:orange"
+                                           onclick="ShowPdfModal('/Content/Processor Type-Windows.pdf');">
+                                        </i>
+                                    </p>*@
+                                    @{
+                                        var types = new List<Tuple<int, string>>()
+                                                                                                                                        {
+                                            Tuple.Create(4401, "Intel i3"),
+                                            Tuple.Create(4402, "Intel i5"),
+                                            Tuple.Create(4403, "Intel i7"),
+                                        };
+                                    }
+                                    <table class="table">
+                                        <tbody>
+                                            @foreach (var tuple in types)
+                                            {
+                                                <tr>
+                                                    <td style="width:20%">
+                                                        <div class="form-check">
+                                                            <div class="form-check-label">
+                                                                @Html.RadioButtonFor(q => q.iProcessor, tuple.Item1, new { @onclick = "handleClick(this)" })
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                    <td>@tuple.Item2</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" style="display:none" id="DivProcessorGeneration">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+
+                                    <h4>What is the generation of your processor?</h4>
+                                    <p style="color:orange">
+                                        How do I determine my processor generation &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <i class="fas fa-question-circle"
+                                           style="color:orange"
+                                           onclick="ShowPdfModal('/Content/Processor Gen - Windows.pdf');">
+                                        </i>
+                                    </p>
+                                    @{
+                                        var gens = new List<Tuple<int, int>>() {
+                                            Tuple.Create(14783, 6),
+                                            Tuple.Create(14784, 7),
+                                            Tuple.Create(14785, 8),
+                                            Tuple.Create(14786, 9),
+                                        };
+                                    }
+                                    <table class="table">
+                                        <tbody>
+                                            @foreach (var tuple in gens)
+                                            {
+                                                <tr>
+                                                    <td style="width:20%">
+                                                        <div class="form-check">
+                                                            <div class="form-check-label">
+                                                                @Html.RadioButtonFor(q => q.iProcessorGen, tuple.Item1, new { @onclick = "handleClick(this)" })
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                    <td>@(tuple.Item2)th Generation</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" id="DivMemory" style="display:none">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+
+                                    <h4>What is the laptop's memory capacity?</h4>
+                                    <p style="color:orange">
+                                        How do I determine my memory capacity &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <i class="fas fa-question-circle"
+                                           style="color:orange"
+                                           onclick="ShowPdfModal('/Content/Memory Capacity-Windows.pdf');">
+                                        </i>
+                                    </p>
+                                    @{
+                                        var memories = new List<Tuple<int, int>>() {
+                                            Tuple.Create(11337, 4),
+                                            Tuple.Create(11307, 8),
+                                            Tuple.Create(11308, 16),
+                                            Tuple.Create(11309, 32),
+                                            Tuple.Create(11450, 64),
+                                        };
+                                    }
+                                    <table class="table">
+                                        <tbody>
+                                            @foreach (var tuple in memories)
+                                            {
+                                                <tr>
+                                                    <td style="width:20%">
+                                                        <div class="form-check">
+                                                            <div class="form-check-label">
+                                                                @Html.RadioButtonFor(q => q.iMemory, tuple.Item1, new { @onclick = "handleClick(this)" })
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                    <td>@tuple.Item2 GB</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" id="DivStorage" style="display:none">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+
+                                    <h4>What is the laptop's storage capacity?</h4>
+                                    <p style="color:orange">
+                                        How do I determine my storage capacity &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <i class="fas fa-question-circle"
+                                           style="color:orange"
+                                           onclick="ShowPdfModal('/Content/Storage - Windows.pdf');">
+                                        </i>
+                                    </p>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:20%">
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.iHDD, 11329, new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                                <td>256 GB SSD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.iHDD, 11331, new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>512 GB SSD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.iHDD, 13473, new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>1 TB SSD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.iHDD, 13474, new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>2 TB SSD</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" id="DivGrade" style="display:none">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+                                    <h4>What is the condition of your laptop?</h4>
+                                    <p style="color:orange">
+                                        See condition examples &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <i class="fas fa-question-circle"
+                                           style="color:orange"
+                                           onclick="ShowConditionsModal();">
+                                        </i>
+                                    </p>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:20%">
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.vGrade, "A", new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                                <td><text><strong>Grade A</strong></text> <br><span style="color:darkslategray">Brand new; original packaging may be open to review contents</span> </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.vGrade, "B", new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><text><strong>Grade B</strong></text> <br><span style="color:darkslategray">Minor scratches, no discoloration, non-removable marks/stickers, dents or cracks</span> </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.vGrade, "C", new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><text><strong>Grade C</strong></text> <br><span style="color:darkslategray">Scratches, discoloration, non-removable marks/stickers, dents or bay cover removed</span> </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <div class="form-check-label">
+                                                            @Html.RadioButtonFor(q => q.vGrade, "D", new { @onclick = "handleClick(this)" })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><text><strong>Grade D</strong></text> <br><span style="color:darkslategray">Cracks, extreme cosmetic damage</span> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" id="DivGradeResultA" style="display:none">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+
+                                    <h4>For a device to be in this condition, the following must also be true:</h4>
+                                    <ul>
+                                        <li>100% complete in its original box, packaging, and with all OS Licensing and accessories.</li>
+                                        <li>100% functional with the remaining OEM warranty.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" id="DivGradeResultB" style="display:none">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+
+                                    <h4>For a device to be in this condition, the following must also be true:</h4>
+                                    <ul>
+                                        <li>100% functional and passes OEM diagnostic testing.</li>
+                                        <li>Original battery above 80% capacity.</li>
+                                        <li>Device is complete with all its original components and accessories.</li>
+                                        <li>It is allowed to have repairable minor blemishes.</li>
+                                        <li>Acceptable example: case scratches no more than one inch in length</li>
+                                        <li>Not acceptable example: case cracks or screen scratches or blemishes</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" id="DivGradeResultC" style="display:none">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+
+                                    <h4>For a device to be in this condition, the following must also be true:</h4>
+                                    <ul>
+                                        <li>Device is Grade “C” and 100% functional and passes OEM diagnostic testing.</li>
+                                        <li>Is complete with all its original components and accessories.</li>
+                                        <li>Is in FAIR cosmetic condition with more wear & tear and suitable for use as a Scratch & Dent device.</li>
+                                        <li>Acceptable examples: case may have scratches, discoloration and dents.  Screen minor light scratches no more than 3 and not larger than one inch.</li>
+                                        <li>Not Acceptable Case examples: cracks, missing case sections, missing parts essential to the device</li>
+                                        <li>Not Acceptable Screen examples: spots, burns, lines, shadows and ununiform color and brightness</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" id="DivGradeResultD" style="display:none">
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+                                    <h4>For a device to be in this condition, the following must also be true:</h4>
+                                    <ul>
+                                        <li>May or may not be functional due to missing and/or damaged major components such as: memory, hard drive, battery, keyboard keys, touchpad, Wi-Fi, video, touchscreen, hinges.</li>
+                                        <li>Have large cracks and/or exposed internal components.</li>
+                                        <li>Device with major screen blemishes and scratches.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" id="DivQuantity" style="display:none">
+                        <div class="card-body">
+                            <div id="selectedGrade" style="display: flex; align-items: center;"></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row pt-2">
+                                <div class="col pb-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="text-center">Tell us the quantity</h4>
+                                            <input onkeydown="if (event.key == 'Enter') event.preventDefault();"
+                                                   style="text-align:center"
+                                                   type="number" value=""
+                                                   data-msg-required=""
+                                                   maxlength="100"
+                                                   class="form-control text-3 h-auto py-2"
+                                                   name="iQuantity"
+                                                   required="">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 class="text-center">Each device is valued at</h4>
+                                            <h1 class="text-center" style="color:lightgreen" id="mPrice">$ 85.00</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            <input type="button"
+                                   value="Back"
+                                   class="btn btn-default btn-modern float-start"
+                                   data-loading-text="Loading..."
+                                   style="display:none" id="BtnBack"
+                                   onclick="GoBack();">
+                        </div>
+                        <div class="form-group col-lg-9">
+                            <div style="display: flex; justify-content: flex-end;">
+                                <input type="submit"
+                                       value="Add to quote and add a new asset"
+                                       class="btn btn-primary"
+                                       data-loading-text="Loading..."
+                                       style="display: none; margin-right: 5px;"
+                                       id="BtnAddToBox">
+
+                                <button type="button"
+                                        class="btn btn-default"
+                                        style="display: none;"
+                                        id="BtnAddToBoxNew">
+                                    Add to quote and finish
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@Html.Partial("~/Views/Home/ConditionsModal.cshtml")

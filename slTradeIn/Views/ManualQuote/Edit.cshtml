@@ -1,0 +1,281 @@
+﻿@model slTradeIn.Models.ManualQuoteModel
+@{
+    ViewBag.Title = "Manual Quotes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    const fillFormMQ = location => {
+        document.getElementById("Manufacturer").value = location.vManufacturer;
+        document.getElementById("ModelNumber").value = location.vModelNumber;
+        document.getElementById("HDD").value =  location.vHDD;
+        document.getElementById("Ram").value = location.vRam;
+        document.getElementById("Processor").value = location.vProcessor;
+        document.getElementById("Quantity").value = location.iQuantity;
+    };
+
+    function ShowDetailModal(iManualQuoteDetID) {
+
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+        if (!checkedOne) {
+            alert("You must select at least one location first");
+            return;
+        }
+        $("#iManualQuoteDetID").val(iManualQuoteDetID);
+
+        if (iManualQuoteDetID == "0")
+        {
+            fillFormMQ(new Proxy({}, { get: () => '' }));
+        }
+        else
+        {
+            var Data = { ID: iManualQuoteDetID };
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(Data),
+                url: '@Url.Action("GetInfoManualQuote", "ManualQuote")',
+                async: false,
+                bDeferRender: true,
+                bProcessing: true,
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data == null) return;
+                    fillFormMQ(data);
+                },
+            });
+        }
+
+        $("#DetailModal").modal("show");
+    }
+
+    function DeleteDetail() {
+        var Data = {
+            iManualQuoteDetID: $("#iManualQuoteDetID").val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(Data),
+            url: '@Url.Action("DeleteDetail", "ManualQuote")',
+            async: false,
+            bDeferRender: true,
+            bProcessing: true,
+            contentType: 'application/json; charset=utf-8',
+            success: function () {
+                window.location.href = "/ManualQuote/Edit";
+            }
+        });
+    }
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+</script>
+<div role="main" class="main">
+
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Manual Quote</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="@Url.Action("UserProfile","Home")">User Profile</a></li>
+                        <li class="active">Manual Quote</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="container pt-3 pb-2">
+        @using (Html.BeginForm("Edit", "ManualQuote", FormMethod.Post, new { @class = "needs-validation" }))
+        {
+            @Html.HiddenFor(q => q.iManualQuoteID, new { id = "iManualQuoteID" })
+            @Html.HiddenFor(q => q.iManualQuoteDetID, new { id = "iManualQuoteDetID" })
+            <div class="modal fade" id="DetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="largeModalLabel">Item</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Manufacturer (ex. Dell)</label>
+                                <div class="col-lg-12">
+                                    <input id="Manufacturer" class="form-control text-3 h-auto py-2" type="text" name="Manufacturer" value="" required>
+                                </div>
+                                <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Model Number (ex. Latitude 5480; for all apple products, the Part Number is required ex. MD101LL/A)</label>
+                                <div class="col-lg-12">
+                                    <input id="ModelNumber" class="form-control text-3 h-auto py-2" type="text" name="ModelNumber" value="" required>
+                                </div>
+                                <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2">HDD (ex. 256GB SSD)</label>
+                                <div class="col-lg-12">
+                                    <input id="HDD" class="form-control text-3 h-auto py-2" type="text" name="HDD" value="">
+                                </div>
+                                <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2">Ram (ex. 8GB (2x4GB))</label>
+                                <div class="col-lg-12">
+                                    <input id="Ram" class="form-control text-3 h-auto py-2" type="text" name="Ram" value="">
+                                </div>
+                                <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2">Processor (ex. Intel Core i5-6500)</label>
+                                <div class="col-lg-12">
+                                    <input id="Processor" class="form-control text-3 h-auto py-2" type="text" name="Processor" value="">
+                                </div>
+                                <label class="col-lg-12 col-form-label form-control-label line-height-9 pt-2 text-2 required">Quantity</label>
+                                <div class="col-lg-12">
+                                    <input id="Quantity" class="form-control text-3 h-auto py-2" type="text" name="Quantity" value="" onkeypress="return isNumber(event)" required>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" value="Delete" class="btn btn-danger" data-loading-text="Loading..." onclick="DeleteDetail();" id="btnDeleteLocation">
+                            <input type="submit" value="Save" class="btn btn-primary" data-loading-text="Loading...">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col pb-3">
+                            <h4 class="text-center">Trade In Location</h4>
+                            <hr />
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+
+                                        </th>
+                                        <th>
+                                            Location Label
+                                        </th>
+                                        <th>
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ListLocation)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (item.bCheck)
+                                                {
+                                                    <input class="form-check-input" type="checkbox" value="@item.iLogisticID" name="chk_@item.iLogisticID" id="chk_@item.iLogisticID" checked>
+                                                }
+                                                else
+                                                {
+                                                    <input class="form-check-input" type="checkbox" value="@item.iLogisticID" name="chk_@item.iLogisticID" id="chk_@item.iLogisticID">
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @String.Format("{0:MM/dd/yyyy}", item.vLocationLabel)
+                                            </td>
+                                            <td class="text-end">
+                                                <button class="btn btn-default btn-sm rounded-0" onclick="location.href = '@Url.Action("Edit","ManualQuote",new { iCartID = item.iManualQuoteID})'" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-search"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-lg-9">
+
+                </div>
+                <div class="form-group col-lg-3">
+                    <input type="button" value="Add new item" class="btn btn-primary float-end" data-loading-text="Loading..." onclick="ShowDetailModal(0);">
+                </div>
+            </div>
+
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col pb-3">
+                            <h4 class="text-center">Detail of assets</h4>
+                            <hr />
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Manufacturer
+                                        </th>
+                                        <th>
+                                            Model Number
+                                        </th>
+                                        <th>
+                                            HDD
+                                        </th>
+                                        <th>
+                                            Ram
+                                        </th>
+                                        <th>
+                                            Processor
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th class="text-end">
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ListDetail)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.vManufacturer
+                                            </td>
+                                            <td>
+                                                @item.vModelNumber
+                                            </td>
+                                            <td>
+                                                @item.vHDD
+                                            </td>
+                                            <td>
+                                                @item.vRam
+                                            </td>
+                                            <td>
+                                                @item.vProcessor
+                                            </td>
+                                            <td>
+                                                @item.iQuantity
+                                            </td>
+                                            <td class="text-end">
+                                                <button class="btn btn-default btn-sm rounded-0" onclick="ShowDetailModal(@item.iManualQuoteDetID)" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-search"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                            
+                            }
+                        </div>
+                    </div>

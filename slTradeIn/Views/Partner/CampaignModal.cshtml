@@ -1,0 +1,28 @@
+﻿@model List<slTradeIn.Models.EmailCampaignModel>
+@{
+    ViewBag.Title = "CampaignModal";
+}
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.emailGroup)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

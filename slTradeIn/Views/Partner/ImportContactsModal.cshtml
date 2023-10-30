@@ -1,0 +1,292 @@
+﻿<script src="https://accounts.google.com/gsi/client" async></script>
+<script type="text/javascript" src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+
+<script>
+    function showModal(modalId) {
+        $(modalId).modal("show");
+    }
+
+    function hideModal(modalId) {
+        $(modalId).modal("hide");
+    }
+
+    function showLoadingOverlay(overlayId) {
+        $('.modal-body > *:not([data-loading-overlay])').addClass('d-none');
+        $(overlayId).addClass('loading-overlay-showing modal-body-square');
+    }
+
+    function hideLoadingOverlay(overlayId) {
+        $(overlayId).removeClass('loading-overlay-showing modal-body-square');
+        $('.modal-body > *:not([data-loading-overlay])').removeClass('d-none');;
+    }
+
+    function startGoogleContactsImport() {
+        const client = google.accounts.oauth2.initTokenClient({
+            client_id: '516493378379-hhg87cnr2hfkvgnciek0adf9megvg6e5.apps.googleusercontent.com',
+            scope: 'https://www.googleapis.com/auth/contacts',
+            callback: (response) => {
+                hideLoadingOverlay('#waitingApprovalOverlay');
+                getGoogleContactsList(response.access_token);
+            },
+            error_callback: () => {
+                hideLoadingOverlay('#waitingApprovalOverlay');
+                appendAlert("The authorization proccess was cancelled. Let's try again", 'danger', 'contactsImportErrorAlert')
+            }
+        });
+
+        showLoadingOverlay('#waitingApprovalOverlay');
+        client.requestAccessToken();
+    }
+
+    function getGoogleContactsList(accessToken) {
+        const url = '@Url.Action("GetGoogleContacts", "Contacts")';
+        $.ajax({
+            url,
+            type: 'POST',
+            dataType: 'json',
+            data: { accessToken },
+            cache: false,
+            beforeSend: function () {
+                showLoadingOverlay('#loadingContactsOverlay')
+            },
+            success: function (connections) {
+                hideModal('#importContactsModal')
+                showModal('#saveContactsConfirmationModal')
+               
+                $('#saveContactsBtn').on("click", function () {
+                    $.ajax({
+                        url: '@Url.Action("SaveGoogleContacts", "Contacts")',
+                        type: 'POST',
+                        cache: false,
+                        data: { people: connections },
+                        beforeSend: function () {
+                            showLoadingOverlay('#savingContactsOverlay')
+                        },
+                        complete: function () {
+                            hideLoadingOverlay('#savingContactsOverlay')
+                            window.location.assign('@Url.Action("Index", "Landing")')
+                        },
+                        error: function () {
+                            showModal('#importContactsModal')
+                            hideModal('#saveContactsConfirmationModal')
+                            appendAlert('An error occured while importing your contacts. Try again later.', 'danger', 'contactsImportErrorAlert')
+                        }
+                    });
+                });
+            },
+            complete: function () {
+                hideLoadingOverlay('#loadingContactsOverlay')
+            },
+            error: function () {
+                appendAlert('An error occured while importing your contacts. Try again later.', 'danger', 'contactsImportErrorAlert')
+            },
+        });
+    }
+    
+    function getOutlookContactsList(accessToken) {
+            const url = '@Url.Action("GetOutlookContacts", "Contacts")';
+            $.ajax({
+                url,
+                type: 'POST',
+                dataType: 'json',
+                data: { accessToken },
+                cache: false,
+                beforeSend: function () {
+                    showLoadingOverlay('#loadingContactsOverlay')
+                },
+                success: function (connections) {
+                    hideModal('#importContactsModal')
+                    showModal('#saveContactsConfirmationModal')
+                   
+                    $('#saveContactsBtn').on("click", function () {
+                        $.ajax({
+                            url: '@Url.Action("SaveOutlookContacts", "Contacts")',
+                            type: 'POST',
+                            cache: false,
+                            data: { people: connections },
+                            beforeSend: function () {
+                                showLoadingOverlay('#savingContactsOverlay')
+                            },
+                            complete: function () {
+                                hideLoadingOverlay('#savingContactsOverlay')
+                                window.location.assign('@Url.Action("Index", "Landing")')
+                            },
+                            error: function () {
+                                showModal('#importContactsModal')
+                                hideModal('#saveContactsConfirmationModal')
+                                appendAlert('An error occured while importing your contacts. Try again later.', 'danger', 'contactsImportErrorAlert')
+                            }
+                        });
+                    });
+                },
+                complete: function () {
+                    hideLoadingOverlay('#loadingContactsOverlay')
+                },
+                error: function () {
+                    appendAlert('An error occured while importing your contacts. Try again later.', 'danger', 'contactsImportErrorAlert')
+                },
+            });
+        }
+
+    function startOutlookContactsImport() {  
+        showLoadingOverlay('#waitingApprovalOverlay');
+        const config = {
+            auth: {
+                clientId: 'c799344a-86f2-422f-8ea2-646c9d205db3',
+                authority: "https://login.microsoftonline.com/common",
+                redirectUri: "https://localhost:7192/" 
+            },
+            system: {	
+                loggerOptions: {	
+                     loggerCallback: (level, message, containsPii) => {	
+                         if (containsPii) {		
+                             return;		
+                         }		
+                         switch (level) {		
+                             case msal.LogLevel.Error:		
+                                 console.error(message);		
+                                 return;		
+                             case msal.LogLevel.Info:		
+                                 console.info(message);		
+                                 return;		
+                             case msal.LogLevel.Verbose:		
+                                 console.debug(message);		
+                                 return;		
+                             case msal.LogLevel.Warning:		
+                                 console.warn(message);		
+                                 return;		
+                         }	
+                     }	
+                 }	
+             }
+        };
+        
+       const tokenRequest = {
+           scopes: ["Contacts.ReadWrite"],
+           prompt: 'select_account',
+           forceRefresh: false 
+       }; 
+        
+        const myMSALObj = new msal.PublicClientApplication(config);
+       
+         myMSALObj.acquireTokenPopup(tokenRequest).then(res => { 
+             console.log(res);
+                hideLoadingOverlay('#waitingApprovalOverlay');
+                getOutlookContactsList(res.accessToken);
+         })
+         .catch( () => {
+                hideLoadingOverlay('#waitingApprovalOverlay');
+                appendAlert("The authorization proccess was cancelled. Let's try again", 'danger', 'contactsImportErrorAlert')
+         });     
+    }
+
+    function removeAlert() {
+        $("#loadingContactsOverlay").removeClass('loading-overlay-showing');
+    }
+</script>
+
+<script src="~/Scripts/Custom/CustomAlert.js"></script>
+
+<style>
+    .square {
+        width: 200px;
+        height: 200px;
+        max-width: 200px;
+        max-height: 200px;
+    }
+
+    .modal-body-square {
+        height: 200px;
+    }
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="importContactsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Let's add some contacts</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="waitingApprovalOverlay" class="" data-loading-overlay data-plugin-options="{'hideDelay': 500, 'effect': 'cubes'}">
+                    <div class="loading-overlay">
+                        <div class="bounce-loader">
+                            <div class="cssload-thecube">
+                                <div class="cssload-cube cssload-c1"></div>
+                                <div class="cssload-cube cssload-c2"></div>
+                                <div class="cssload-cube cssload-c4"></div>
+                                <div class="cssload-cube cssload-c3"></div>
+                            </div>
+                            <p class="mt-2">Waiting for your approval...</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="loadingContactsOverlay" class="" data-loading-overlay data-plugin-options="{'hideDelay': 500, 'effect': 'cubes'}">
+                    <div class="loading-overlay">
+                        <div class="bounce-loader">
+                            <div class="cssload-thecube">
+                                <div class="cssload-cube cssload-c1"></div>
+                                <div class="cssload-cube cssload-c2"></div>
+                                <div class="cssload-cube cssload-c4"></div>
+                                <div class="cssload-cube cssload-c3"></div>
+                            </div>
+                            <p class="mt-2">Loading your contacts...</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="contactsImportErrorAlert"></div>
+                <div class="row align-items-center justify-content-center g-4 mb-5">
+                    <div class="col-6 square">
+                        <a onclick="startGoogleContactsImport()">
+                            <div class="border border-1 rounded-1 justify-content-center align-items-center text-center p-2 d-flex flex-column gap-2 h-100 cur-pointer border-color-hover-primary">
+                                <img src="~/Content/Images/Icons/google-contacts.svg" height="70"/>
+                                <p style="margin: 0">Sync from Google Contacts</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 square">
+                        <a onclick="startOutlookContactsImport()">
+                            <div class="border border-1 rounded-1 justify-content-center align-items-center text-center p-2 d-flex flex-column gap-2 h-100 cur-pointer border-color-hover-primary">
+                                <img src="~/Content/Images/Icons/outlook-exchange-contacts.svg" height="70"/>
+                                <p style="margin: 0">Sync from Outlook or Exchange Contacts</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation modal -->
+<div class="modal fade" id="saveContactsConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="formModalLabel">Contacts found!</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="savingContactsOverlay" class="" data-loading-overlay data-plugin-options="{'hideDelay': 500, 'effect': 'cubes'}">
+                    <div class="loading-overlay">
+                        <div class="bounce-loader">
+                            <div class="cssload-thecube">
+                                <div class="cssload-cube cssload-c1"></div>
+                                <div class="cssload-cube cssload-c2"></div>
+                                <div class="cssload-cube cssload-c4"></div>
+                                <div class="cssload-cube cssload-c3"></div>
+                            </div>
+                            <p class="mt-2">Saving your contacts...</p>
+                        </div>
+                    </div>
+                </div>
+                <p>We've detected some contacts in your account. If you want to save them in your TechTradeUp account click Continue.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" onclick="showModal('#importContactsModal');">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveContactsBtn">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+﻿@model List<Google.Apis.PeopleService.v1.Data.Person>
+
+<div role="main" class="main">
+    <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 align-self-center p-static order-2 text-center">
+                    <h1 class="font-weight-bold text-dark">Contacts</h1>
+                </div>
+                <div class="col-md-12 align-self-center order-1">
+                    <ul class="breadcrumb d-block text-center">
+                        <li><a href="#">Mail</a></li>
+                        <li class="active">Index</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <button type="button" class="btn btn-primary" onclick="showModal('#importContactsModal');">
+                    Import
+                </button>
+            </div>
+            <div class="col-8">
+                <form class="form-inline" style="display: flex; justify-content: flex-end;">
+                    <div class="form-group mx-sm-3 mb-2" style="display: flex; align-items: center;">
+                        Page <input type="number" id="page" class="form-control mx-1" style="width: 60px;" value="@ViewBag.Page"> of @ViewBag.Count
+                    </div>
+                    <button type="button" class="btn btn-primary mb-2" onclick="location.search = 'page=' + page.value;">
+                        Go
+                    </button>
+                    &nbsp;
+                    <a class="btn btn-primary mb-2" href="?page=@(ViewBag.Page + 1)">
+                        Next
+                    </a>
+                </form>
+            </div>
+        </div>
+
+        <br />
+        <br />
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Names[0].DisplayName</td>
+                        <td>@(item.EmailAddresses != null ? item.EmailAddresses[0].Value : "--")</td>
+                        <td>@(item.PhoneNumbers != null ? item.PhoneNumbers[0].Value : "--")</td>
+                        <td class="text-center" style="display: flex;">
+                            <a hredf="@Url.Action("Edit", "Mail", new { id = item.ResourceName })" onclick="ShowMailFormModal(@Json.Serialize(item));">
+                                <button class="btn btn-default btn-sm rounded-0"
+                                        type="button"
+                                        title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </a>
+                            <form action="@Url.Action("Delete", "Mail", new { id = item.ResourceName })" method="post">
+                                <button class="btn btn-danger btn-sm rounded-0"
+                                        title="Delete">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="button" class="btn btn-default" onclick="location.href='@Url.Action("GenerateLinkCampaing", "Partner")'" value="Go Back to Generate Link Campaign" />
+    </div>
+</div>
+
+@Html.Partial("~/Views/Partner/ImportContactsModal.cshtml")
+@Html.Partial("~/Views/Partner/MailModal.cshtml")
+@Html.Partial("~/Views/Partner/MailFormModal.cshtml")
