@@ -846,6 +846,7 @@ public class HomeController : Controller
     public ActionResult BoxList()
     {
         var model = _detail_TTU_userCart_Data.GetList(Convert.ToInt32(SessionTradeIn.iUserID));
+
         var allDetails = _detail_TTU_userCartDetail_Data
             .FromCarts(model.Select(x => x.iCartID).ToList());
 

@@ -781,6 +781,9 @@ namespace slTradeIn.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("iEmailID"));
 
+                    b.Property<int?>("UseriUserID")
+                        .HasColumnType("int");
+
                     b.Property<bool>("bStatus")
                         .HasColumnType("bit");
 
@@ -789,6 +792,9 @@ namespace slTradeIn.Migrations
 
                     b.Property<DateTime?>("dUpdatedDate")
                         .HasColumnType("datetime");
+
+                    b.Property<int>("iUserID")
+                        .HasColumnType("int");
 
                     b.Property<string>("vEmail")
                         .IsRequired()
@@ -801,12 +807,17 @@ namespace slTradeIn.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(500)");
 
+                    b.Property<string>("vEmailProvider")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("vName")
                         .HasMaxLength(500)
                         .IsUnicode(false)
                         .HasColumnType("varchar(500)");
 
                     b.HasKey("iEmailID");
+
+                    b.HasIndex("UseriUserID");
 
                     b.ToTable("Detail_TTU_userEmail");
                 });
@@ -1311,6 +1322,15 @@ namespace slTradeIn.Migrations
                     b.Navigation("iModel");
                 });
 
+            modelBuilder.Entity("slTradeIn.Data.Detail_TTU_userEmail", b =>
+                {
+                    b.HasOne("slTradeIn.Data.Detail_TTU_user", "User")
+                        .WithMany("UserEmails")
+                        .HasForeignKey("UseriUserID");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("slTradeIn.Data.Detail_TTU_userLocation", b =>
                 {
                     b.HasOne("slTradeIn.Data.Detail_TTU_user", "iUser")
@@ -1325,6 +1345,11 @@ namespace slTradeIn.Migrations
             modelBuilder.Entity("slTradeIn.Data.Detail_ModelMaster", b =>
                 {
                     b.Navigation("Detail_ModelMasterPricing");
+                });
+
+            modelBuilder.Entity("slTradeIn.Data.Detail_TTU_user", b =>
+                {
+                    b.Navigation("UserEmails");
                 });
 #pragma warning restore 612, 618
         }

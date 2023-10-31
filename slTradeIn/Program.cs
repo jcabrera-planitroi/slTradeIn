@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using slTradeIn.Areas.Identity.Middleware;
 using slTradeIn.DAL;
 using slTradeIn.Data;
 using slTradeIn.DataAccess;
@@ -15,12 +14,16 @@ builder.Services.AddDbContext<PlanITVisionContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<PlanITVisionContext>();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services
+    .AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, UserClaimsPrincipalFactory<IdentityUser, IdentityRole>>();
 
 builder.Services.AddScoped<Detail_TTU_emailTemplate_Data>();
 builder.Services.AddScoped<Detail_TTU_user_Data>();
@@ -36,8 +39,23 @@ builder.Services.AddScoped<Detail_TTU_userCartDetail_Data>();
 builder.Services.AddScoped<Detail_TTU_userEmail_Data>();
 builder.Services.AddScoped<Detail_ModelMaster_Data>();
 
+// builder.Services.Configure<CookiePolicyOptions>(options =>
+// {
+//     // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+//     options.CheckConsentNeeded = context => true;
+//     options.MinimumSameSitePolicy = SameSiteMode.None;
+// });
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.IsEssential = true;
+    options.IdleTimeout = TimeSpan.FromDays(1);
+    options.Cookie.HttpOnly = true;
+});
+
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSession();
+// builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
@@ -49,29 +67,32 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-var sessionValueProvider = new SessionTradeIn.WebSessionValueProvider(app.Services.GetService<IHttpContextAccessor>() ??
-                                                                      throw new Exception(
-                                                                          "HTTP CONTEXT ACCESSOR NOT INITIALIZED"));
-SessionTradeIn.Initialize(sessionValueProvider);
-
-app.UseMiddleware<FixAntiForgeryIssueMiddleware>("/account/login");
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession();
 app.UseHttpLogging();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
+app.UseSession();
+// app.Use(async (context, next) =>
+// {
+//     var sessionValueProvider = new SessionTradeIn.WebSessionValueProvider(context.Session);
+//     SessionTradeIn.Initialize(sessionValueProvider);
+//     await next();
+// });
+
+var sessionValueProvider = new SessionTradeIn.WebSessionValueProvider(app.Services.GetService<IHttpContextAccessor>() ??
+                                                                      throw new Exception(
+                                                                          "HTTP CONTEXT ACCESSOR NOT INITIALIZED"));
+SessionTradeIn.Initialize(sessionValueProvider);
+
+app.MapRazorPages();
 app.MapControllerRoute(
     "default",
     "{controller=Landing}/{action=Index}/{id?}");
-
-app.MapRazorPages();
 
 app.Run();

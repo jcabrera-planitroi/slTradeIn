@@ -38,4 +38,5 @@ public partial class Detail_TTU_user
     public DateTime? dDateCreation { get; set; }
 
     public int? iUserIDPartner { get; set; }
+    public virtual ICollection<Detail_TTU_userEmail> UserEmails { get; set; }
 }

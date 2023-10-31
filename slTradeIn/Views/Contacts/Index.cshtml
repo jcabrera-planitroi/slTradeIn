@@ -1,4 +1,4 @@
-﻿@model List<Google.Apis.PeopleService.v1.Data.Person>
+﻿@model List<slTradeIn.Data.Detail_TTU_userEmail>
 
 <div role="main" class="main">
     <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
@@ -9,7 +9,9 @@
                 </div>
                 <div class="col-md-12 align-self-center order-1">
                     <ul class="breadcrumb d-block text-center">
-                        <li><a href="#">Mail</a></li>
+                        <li>
+                            <a href="#">Mail</a>
+                        </li>
                         <li class="active">Index</li>
                     </ul>
                 </div>
@@ -40,45 +42,47 @@
             </div>
         </div>
 
-        <br />
-        <br />
+        <br/>
+        <br/>
 
         <table class="table">
             <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col"></th>
-                </tr>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Provider</th>
+                <th scope="col">Group</th>
+                <th scope="col"></th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Names[0].DisplayName</td>
-                        <td>@(item.EmailAddresses != null ? item.EmailAddresses[0].Value : "--")</td>
-                        <td>@(item.PhoneNumbers != null ? item.PhoneNumbers[0].Value : "--")</td>
-                        <td class="text-center" style="display: flex;">
-                            <a hredf="@Url.Action("Edit", "Mail", new { id = item.ResourceName })" onclick="ShowMailFormModal(@Json.Serialize(item));">
-                                <button class="btn btn-default btn-sm rounded-0"
-                                        type="button"
-                                        title="Edit">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                            </a>
-                            <form action="@Url.Action("Delete", "Mail", new { id = item.ResourceName })" method="post">
-                                <button class="btn btn-danger btn-sm rounded-0"
-                                        title="Delete">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.vName</td>
+                    <td>@item.vEmail</td>
+                    <td>@(item.vEmailProvider ?? "--")</td>
+                    <td>@(item.vEmailGroup ?? "--")</td>
+                    <td class="text-center" style="display: flex;">
+                        <a hredf="@Url.Action("Edit", "Mail", new { id = item.iEmailID })" onclick="ShowMailFormModal(@Json.Serialize(item));">
+                            <button class="btn btn-default btn-sm rounded-0"
+                                    type="button"
+                                    title="Edit">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </a>
+                        <form action="@Url.Action("Delete", "Mail", new { id = item.iEmailID })" method="post">
+                            <button class="btn btn-danger btn-sm rounded-0"
+                                    title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
-        <input type="button" class="btn btn-default" onclick="location.href='@Url.Action("GenerateLinkCampaing", "Partner")'" value="Go Back to Generate Link Campaign" />
+        <input type="button" class="btn btn-default" onclick="location.href='@Url.Action("GenerateLinkCampaing", "Partner")'" value="Go Back to Generate Link Campaign"/>
     </div>
 </div>
 

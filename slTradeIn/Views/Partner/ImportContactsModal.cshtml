@@ -17,7 +17,7 @@
 
     function hideLoadingOverlay(overlayId) {
         $(overlayId).removeClass('loading-overlay-showing modal-body-square');
-        $('.modal-body > *:not([data-loading-overlay])').removeClass('d-none');;
+        $('.modal-body > *:not([data-loading-overlay])').removeClass('d-none');
     }
 
     function startGoogleContactsImport() {
@@ -64,7 +64,7 @@
                         },
                         complete: function () {
                             hideLoadingOverlay('#savingContactsOverlay')
-                            window.location.assign('@Url.Action("Index", "Landing")')
+                            window.location.assign('@Url.Action("Index", "Contacts")')
                         },
                         error: function () {
                             showModal('#importContactsModal')
@@ -108,8 +108,8 @@
                                 showLoadingOverlay('#savingContactsOverlay')
                             },
                             complete: function () {
-                                hideLoadingOverlay('#savingContactsOverlay')
-                                window.location.assign('@Url.Action("Index", "Landing")')
+                                hideLoadingOverlay('#savingContactsOverlay');
+                                window.location.assign('@Url.Action("Index", "Contacts")')
                             },
                             error: function () {
                                 showModal('#importContactsModal')

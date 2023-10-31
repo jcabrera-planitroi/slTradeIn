@@ -141,8 +141,8 @@ public class RegisterModel : PageModel
                 }
 
                 await _signInManager.SignInAsync(user, false);
-                // return RedirectToAction("Verify", new { redirect = "TradeInLocation" });
-                return LocalRedirect(returnUrl);
+                // return RedirectToAction("Verify", "Home", new { redirect = "TradeInLocation" });
+                return RedirectToAction("UserProfile", "Home");
             }
 
             foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);

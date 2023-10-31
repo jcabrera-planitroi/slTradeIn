@@ -6,104 +6,138 @@ using Google.Apis.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
-using Microsoft.Identity.Client;
-using static Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow;
+using slTradeIn.Data;
+using slTradeIn.DataAccess;
+using slTradeIn.Help;
 using static Google.Apis.PeopleService.v1.PeopleResource.ConnectionsResource;
 using Person = Google.Apis.PeopleService.v1.Data.Person;
 
-namespace slTradeIn.Controllers
+namespace slTradeIn.Controllers;
+
+public class ContactsController : Controller
 {
-    public class ContactsController : Controller
+    private readonly Detail_TTU_userEmail_Data _ttuUserEmailData;
+
+    public ContactsController(Detail_TTU_userEmail_Data ttuUserEmailData)
     {
-        private readonly IConfiguration _configuration;
-        
-        public ContactsController(IConfiguration configuration)
+        _ttuUserEmailData = ttuUserEmailData;
+    }
+
+    // GET: Contacts
+    public async Task<ActionResult> Index(int page = 0)
+    {
+        ViewBag.Page = page;
+        ViewBag.Count = _ttuUserEmailData.Count() / 10;
+        return View(_ttuUserEmailData.List(page));
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> SaveGoogleContacts(ICollection<Person> people)
+    {
+        var emailList = new List<Detail_TTU_userEmail>();
+
+        foreach (var person in people)
+            if (person.EmailAddresses?.Count > 0)
+                foreach (var emailAddress in person.EmailAddresses)
+                    emailList.Add(new Detail_TTU_userEmail
+                    {
+                        vEmail = emailAddress.Value,
+                        vName = person.Names[0].DisplayName,
+                        vEmailGroup = "",
+                        dCreatedDate = DateTime.Now,
+                        bStatus = true,
+                        iUserID = Convert.ToInt32(SessionTradeIn.iUserID),
+                        vEmailProvider = "GOOGLE"
+                    });
+
+        _ttuUserEmailData.Save(emailList);
+        return new OkResult();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> SaveOutlookContacts(ICollection<Contact> people)
+    {
+        var emailList = new List<Detail_TTU_userEmail>();
+
+        foreach (var person in people)
+            if (person.EmailAddresses?.Count > 0)
+                foreach (var emailAddress in person.EmailAddresses)
+                    emailList.Add(new Detail_TTU_userEmail
+                    {
+                        vEmail = emailAddress.Address,
+                        vName = person.DisplayName,
+                        vEmailGroup = "",
+                        dCreatedDate = DateTime.Now,
+                        bStatus = true,
+                        iUserID = Convert.ToInt32(SessionTradeIn.iUserID),
+                        vEmailProvider = "OUTLOOK"
+                    });
+
+        _ttuUserEmailData.Save(emailList);
+        return new OkResult();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> GetGoogleContacts(string accessToken)
+    {
+        var credential = GoogleCredential.FromAccessToken(accessToken);
+
+        var service = new PeopleServiceService(new BaseClientService.Initializer
         {
-            _configuration = configuration;
-        }
+            HttpClientInitializer = credential,
+            ApplicationName = "TechTradeUp"
+        });
 
-        // GET: Contacts
-        public async Task<ActionResult> Index()
+        var contactsList = await ListContactsGoogle(service);
+
+        // List Contacts.
+        return Json(contactsList.Connections);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> GetOutlookContacts(string accessToken)
+    {
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var graphClient = new GraphServiceClient(httpClient);
+
+        var contacts = await ListContacts(graphClient);
+
+        return Json(contacts);
+    }
+
+    private async Task<List<Contact>> ListContacts(GraphServiceClient client)
+    {
+        try
         {
-            return View("Index", new List<Person>());
-        }
+            var contacts = await client.Me.Contacts.GetAsync();
 
-        [HttpPost]
-        public async Task<ActionResult> SaveGoogleContacts(ICollection<Person> people)
+            return contacts.Value;
+        }
+        catch (Exception ex)
         {
-            Console.WriteLine("Contacts");
-            return RedirectToAction("Index","Landing");
+            // Manejar errores
+            throw ex;
         }
-        
-        [HttpPost]
-        public async Task<ActionResult> SaveOutlookContacts(ICollection<Contact> people)
+    }
+
+    private Task<ListConnectionsResponse> ListContactsGoogle(PeopleServiceService service)
+    {
+        var listRequest = new ListRequest(service, "people/me")
         {
-            Console.WriteLine("Contacts");
-            return RedirectToAction("Index","Landing");
-        }
+            PersonFields = "names,emailAddresses,organizations,phoneNumbers,locations"
+        };
 
-        [HttpPost]
-        public async Task<ActionResult> GetGoogleContacts(string accessToken)
+        return Task.Run(() => listRequest.ExecuteAsync());
+    }
+
+    private Task<ListConnectionsResponse> ListContactsOutlook(PeopleServiceService service)
+    {
+        var listRequest = new ListRequest(service, "people/me")
         {
-            var credential = GoogleCredential.FromAccessToken(accessToken);
+            PersonFields = "names,emailAddresses,organizations,phoneNumbers,locations"
+        };
 
-            var service = new PeopleServiceService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = "TechTradeUp",
-            });
-
-            var contactsList = await ListContactsGoogle(service);
-
-            // List Contacts.
-            return Json(contactsList.Connections);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> GetOutlookContacts(string accessToken)
-        {
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var graphClient = new GraphServiceClient(httpClient);
-
-            var contacts = await ListContacts(graphClient);
-            
-            return Json(contacts);
-        }
-        
-        private async Task<List<Contact>> ListContacts(GraphServiceClient client)
-        {
-            try
-            {
-                var contacts = await client.Me.Contacts.GetAsync();
-
-                return contacts.Value;
-            }
-            catch (Exception ex)
-            {
-                // Manejar errores
-                throw ex;
-            }
-        }
-
-        private Task<ListConnectionsResponse> ListContactsGoogle(PeopleServiceService service)
-        {
-            ListRequest listRequest = new ListRequest(service, "people/me")
-            {
-                PersonFields = "names,emailAddresses,organizations,phoneNumbers,locations",
-            };
-
-            return Task.Run(() => listRequest.ExecuteAsync());
-        }
-        
-        private Task<ListConnectionsResponse> ListContactsOutlook(PeopleServiceService service)
-        {
-            ListRequest listRequest = new ListRequest(service, "people/me")
-            {
-                PersonFields = "names,emailAddresses,organizations,phoneNumbers,locations",
-            };
-
-            return Task.Run(() => listRequest.ExecuteAsync());
-        }
+        return Task.Run(() => listRequest.ExecuteAsync());
     }
 }

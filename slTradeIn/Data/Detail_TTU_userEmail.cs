@@ -14,10 +14,12 @@ public partial class Detail_TTU_userEmail
     public string vName { get; set; }
 
     public string vEmailGroup { get; set; }
-
+    public string vEmailProvider { get; set; }
     public DateTime dCreatedDate { get; set; }
 
     public DateTime? dUpdatedDate { get; set; }
 
     public bool bStatus { get; set; }
+    public int iUserID { get; set; }
+    public virtual Detail_TTU_user User { get; set; }
 }
