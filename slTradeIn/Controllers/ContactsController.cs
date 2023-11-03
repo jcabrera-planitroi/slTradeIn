@@ -14,7 +14,7 @@ using Person = Google.Apis.PeopleService.v1.Data.Person;
 
 namespace slTradeIn.Controllers;
 
-public class ContactsController : Controller
+public class ContactsController : CustomController
 {
     private readonly Detail_TTU_userEmail_Data _ttuUserEmailData;
 

@@ -1,4 +1,14 @@
-﻿@model List<slTradeIn.Data.Detail_TTU_userEmail>
+﻿@using DevExtreme.AspNet.Mvc
+@model IEnumerable<slTradeIn.Data.Detail_TTU_userEmail>
+
+<script type="text/javascript">
+function calculateCellValue(rowData) {
+    let column = this;
+    if (rowData[column.dataField] === null)
+        return "--";
+    return rowData[column.dataField];
+}
+</script>
 
 <div role="main" class="main">
     <section class="page-header page-header-modern bg-color-light-scale-1 page-header-lg">
@@ -10,7 +20,7 @@
                 <div class="col-md-12 align-self-center order-1">
                     <ul class="breadcrumb d-block text-center">
                         <li>
-                            <a href="#">Mail</a>
+                            <a href="#">Home</a>
                         </li>
                         <li class="active">Index</li>
                     </ul>
@@ -21,68 +31,113 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-4">
+            <div class="col-auto">
                 <button type="button" class="btn btn-primary" onclick="showModal('#importContactsModal');">
                     Import
                 </button>
             </div>
-            <div class="col-8">
-                <form class="form-inline" style="display: flex; justify-content: flex-end;">
-                    <div class="form-group mx-sm-3 mb-2" style="display: flex; align-items: center;">
-                        Page <input type="number" id="page" class="form-control mx-1" style="width: 60px;" value="@ViewBag.Page"> of @ViewBag.Count
-                    </div>
-                    <button type="button" class="btn btn-primary mb-2" onclick="location.search = 'page=' + page.value;">
-                        Go
-                    </button>
-                    &nbsp;
-                    <a class="btn btn-primary mb-2" href="?page=@(ViewBag.Page + 1)">
-                        Next
-                    </a>
-                </form>
+            <div class="col-auto">
+                <input type="button" class="btn btn-default" onclick="location.href='@Url.Action("GenerateLinkCampaing", "Partner")'" value="Go Back to Generate Link Campaign"/>
             </div>
+            @* <div class="col-8"> *@
+            @*     <form class="form-inline" style="display: flex; justify-content: flex-end;"> *@
+            @*         <div class="form-group mx-sm-3 mb-2" style="display: flex; align-items: center;"> *@
+            @*             Page <input type="number" id="page" class="form-control mx-1" style="width: 60px;" value="@ViewBag.Page"> of @ViewBag.Count *@
+            @*         </div> *@
+            @*         <button type="button" class="btn btn-primary mb-2" onclick="location.search = 'page=' + page.value;"> *@
+            @*             Go *@
+            @*         </button> *@
+            @*         &nbsp; *@
+            @*         <a class="btn btn-primary mb-2" href="?page=@(ViewBag.Page + 1)"> *@
+            @*             Next *@
+            @*         </a> *@
+            @*     </form> *@
+            @* </div> *@
+        </div>
+
+        <div class="pt-2">
+            @(Html.DevExtreme().DataGrid<slTradeIn.Data.Detail_TTU_userEmail>()
+                .ID("gridContainer")
+                .ShowBorders(false)
+                .ShowColumnLines(false)
+                .ShowRowLines(true)
+                .AllowColumnResizing(true)
+                .ColumnResizingMode(ColumnResizingMode.Widget)
+                .Paging(paging => paging.PageSize(10))
+                .Editing(editing =>
+                {
+                    editing.Mode(GridEditMode.Form);
+                    editing.AllowAdding(true);
+                    editing.AllowDeleting(true);
+                    editing.AllowUpdating(true);
+                })
+                .DataSource(d => d.Mvc()
+                    .Controller("Contacts")
+                    .LoadAction("Get")
+                    .UpdateAction("Put")
+                    .InsertAction("Post")
+                    .DeleteAction("Delete")
+                    .Key("ID")
+                )
+                .Pager(pager =>
+                {
+                    pager.Visible(true);
+                    pager.DisplayMode(GridPagerDisplayMode.Full);
+                    pager.ShowPageSizeSelector(true);
+                    pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
+                    pager.ShowInfo(true);
+                    pager.ShowNavigationButtons(true);
+                })
+                .DataSource(Model)
+                .Columns(c =>
+                {
+                    c.AddFor(m => m.vEmail).Caption("Email");
+                    c.AddFor(m => m.vName).Caption("Name");
+                    c.AddFor(m => m.vEmailGroup).Caption("Email Group").CalculateCellValue("calculateCellValue").Width(100);
+                    c.AddFor(m => m.vEmailProvider).Caption("Provider").CalculateCellValue("calculateCellValue").Width(100);
+                }))
         </div>
 
         <br/>
         <br/>
 
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Provider</th>
-                <th scope="col">Group</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.vName</td>
-                    <td>@item.vEmail</td>
-                    <td>@(item.vEmailProvider ?? "--")</td>
-                    <td>@(item.vEmailGroup ?? "--")</td>
-                    <td class="text-center" style="display: flex;">
-                        <a hredf="@Url.Action("Edit", "Mail", new { id = item.iEmailID })" onclick="ShowMailFormModal(@Json.Serialize(item));">
-                            <button class="btn btn-default btn-sm rounded-0"
-                                    type="button"
-                                    title="Edit">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                        </a>
-                        <form action="@Url.Action("Delete", "Mail", new { id = item.iEmailID })" method="post">
-                            <button class="btn btn-danger btn-sm rounded-0"
-                                    title="Delete">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-        <input type="button" class="btn btn-default" onclick="location.href='@Url.Action("GenerateLinkCampaing", "Partner")'" value="Go Back to Generate Link Campaign"/>
+        @* <table class="table"> *@
+        @*     <thead> *@
+        @*     <tr> *@
+        @*         <th scope="col">Name</th> *@
+        @*         <th scope="col">Email</th> *@
+        @*         <th scope="col">Provider</th> *@
+        @*         <th scope="col">Group</th> *@
+        @*         <th scope="col"></th> *@
+        @*     </tr> *@
+        @*     </thead> *@
+        @*     <tbody> *@
+        @*     @foreach (var item in Model) *@
+        @*     { *@
+        @*         <tr> *@
+        @*             <td>@item.vName</td> *@
+        @*             <td>@item.vEmail</td> *@
+        @*             <td>@(item.vEmailProvider ?? "--")</td> *@
+        @*             <td>@(item.vEmailGroup ?? "--")</td> *@
+        @*             <td class="text-center" style="display: flex;"> *@
+        @*                 <a hredf="@Url.Action("Edit", "Mail", new { id = item.iEmailID })" onclick="ShowMailFormModal(@Json.Serialize(item));"> *@
+        @*                     <button class="btn btn-default btn-sm rounded-0" *@
+        @*                             type="button" *@
+        @*                             title="Edit"> *@
+        @*                         <i class="fa fa-edit"></i> *@
+        @*                     </button> *@
+        @*                 </a> *@
+        @*                 <form action="@Url.Action("Delete", "Mail", new { id = item.iEmailID })" method="post"> *@
+        @*                     <button class="btn btn-danger btn-sm rounded-0" *@
+        @*                             title="Delete"> *@
+        @*                         <i class="fa fa-trash"></i> *@
+        @*                     </button> *@
+        @*                 </form> *@
+        @*             </td> *@
+        @*         </tr> *@
+        @*     } *@
+        @*     </tbody> *@
+        @* </table> *@
     </div>
 </div>
 

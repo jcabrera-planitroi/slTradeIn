@@ -1,0 +1,159 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>6a513f10-e058-47a1-aad6-3fb6e985b2a8</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="bootstrap" Version="5.3.2"/>
+        <PackageReference Include="DevExpress.AspNetCore.Common" Version="20.1.3"/>
+        <PackageReference Include="DevExpress.AspNetCore.Core" Version="20.1.3"/>
+        <PackageReference Include="DevExpress.Charts" Version="20.1.3"/>
+        <PackageReference Include="Google.Apis.Auth" Version="1.62.1"/>
+        <PackageReference Include="Google.Apis.PeopleService.v1" Version="1.62.0.3093"/>
+        <PackageReference Include="jQuery" Version="3.7.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.24"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.24"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Graph" Version="5.32.0"/>
+        <PackageReference Include="Microsoft.Identity.Client" Version="4.57.0"/>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="DAL\Repositories\Interfaces\"/>
+        <Folder Include="DAL\Services\"/>
+        <Folder Include="wwwroot\Content\"/>
+        <Folder Include="wwwroot\Scripts\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="wwwroot\Scripts\Custom\CustomAlert.js"/>
+        <None Include="wwwroot\Scripts\tinymce\icons\default\icons.js"/>
+        <None Include="wwwroot\Scripts\tinymce\icons\default\icons.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\langs\README.md"/>
+        <None Include="wwwroot\Scripts\tinymce\license.txt"/>
+        <None Include="wwwroot\Scripts\tinymce\models\dom\model.js"/>
+        <None Include="wwwroot\Scripts\tinymce\models\dom\model.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\advlist\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\advlist\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\anchor\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\anchor\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\autolink\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\autolink\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\autoresize\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\autoresize\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\autosave\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\autosave\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\charmap\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\charmap\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\codesample\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\codesample\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\code\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\code\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\directionality\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\directionality\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\emoticons\js\emojiimages.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\emoticons\js\emojiimages.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\emoticons\js\emojis.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\emoticons\js\emojis.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\emoticons\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\emoticons\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\fullscreen\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\fullscreen\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\help\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\help\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\image\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\image\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\importcss\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\importcss\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\insertdatetime\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\insertdatetime\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\link\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\link\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\lists\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\lists\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\media\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\media\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\nonbreaking\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\nonbreaking\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\pagebreak\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\pagebreak\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\preview\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\preview\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\quickbars\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\quickbars\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\save\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\save\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\searchreplace\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\searchreplace\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\table\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\table\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\template\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\template\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\visualblocks\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\visualblocks\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\visualchars\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\visualchars\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\wordcount\plugin.js"/>
+        <None Include="wwwroot\Scripts\tinymce\plugins\wordcount\plugin.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\dark\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\dark\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\default\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\default\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\document\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\document\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\tinymce-5-dark\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\tinymce-5-dark\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\tinymce-5\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\tinymce-5\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\writer\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\content\writer\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide-dark\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide-dark\content.inline.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide-dark\content.inline.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide-dark\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide-dark\skin.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide-dark\skin.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide-dark\skin.shadowdom.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide-dark\skin.shadowdom.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide\content.inline.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide\content.inline.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide\skin.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide\skin.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide\skin.shadowdom.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\oxide\skin.shadowdom.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5-dark\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5-dark\content.inline.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5-dark\content.inline.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5-dark\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5-dark\skin.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5-dark\skin.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5-dark\skin.shadowdom.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5-dark\skin.shadowdom.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5\content.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5\content.inline.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5\content.inline.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5\content.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5\skin.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5\skin.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5\skin.shadowdom.css"/>
+        <None Include="wwwroot\Scripts\tinymce\skins\ui\tinymce-5\skin.shadowdom.min.css"/>
+        <None Include="wwwroot\Scripts\tinymce\themes\silver\theme.js"/>
+        <None Include="wwwroot\Scripts\tinymce\themes\silver\theme.min.js"/>
+        <None Include="wwwroot\Scripts\tinymce\tinymce.d.ts"/>
+        <None Include="wwwroot\Scripts\tinymce\tinymce.js"/>
+        <None Include="wwwroot\Scripts\tinymce\tinymce.min.js"/>
+    </ItemGroup>
+</Project>

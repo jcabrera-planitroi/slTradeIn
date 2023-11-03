@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using slTradeIn.Help;
 
-namespace slTradeIn.Controllers
+namespace slTradeIn.Controllers;
+
+public class CartController : CustomController
 {
-    public class CartController : Controller
-    {
-
-    }
 }

@@ -2,9 +2,8 @@
     Layout = null;
 }
 
-
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 <head>
 
     <!-- Basic -->
@@ -13,12 +12,12 @@
 
     <title>Demo Digital Agency | Porto - Multipurpose Website Template</title>
 
-    <meta name="keywords" content="WebSite Template" />
+    <meta name="keywords" content="WebSite Template"/>
     <meta name="description" content="Porto - Multipurpose Website Template">
     <meta name="author" content="okler.net">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="~/Content/landing/img/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/Content/landing/img/favicon.ico" type="image/x-icon"/>
     <link rel="apple-touch-icon" href="~/Content/landing/img/apple-touch-icon.png">
 
     <!-- Mobile Metas -->
@@ -68,311 +67,333 @@
 </head>
 <body>
 
-    <div class="body">
-        <header id="header" class="header-transparent header-effect-shrink" data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': false, 'stickyChangeLogo': false, 'stickyStartAt': 30, 'stickyHeaderContainerHeight': 70}">
-            <div class="header-body border-top-0 bg-dark box-shadow-none">
-                <div class="header-container container">
+<div class="body">
+<header id="header" class="header-transparent header-effect-shrink" data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': false, 'stickyChangeLogo': false, 'stickyStartAt': 30, 'stickyHeaderContainerHeight': 70}">
+    <div class="header-body border-top-0 bg-dark box-shadow-none">
+        <div class="header-container container">
+            <div class="header-row">
+                <div class="header-column">
                     <div class="header-row">
-                        <div class="header-column">
-                            <div class="header-row">
-                                <div class="header-logo">
-                                    <a href="index.html">
-                                        <img alt="Porto" width="220" src="~/Content/landing/img/logo_white.png">
-                                    </a>
-                                </div>
-                            </div>
+                        <div class="header-logo">
+                            <a asp-action="Index">
+                                <img alt="Porto" width="220" src="~/Content/landing/img/logo_white.png">
+                            </a>
                         </div>
-                        <div class="header-column justify-content-end">
-                            <div class="header-row">
-                                <div class="header-nav header-nav-links header-nav-line header-nav-bottom-line header-nav-bottom-line-active-text-light header-nav-dropdowns-dark header-nav-light-text">
-                                    <div class="header-nav-main header-nav-main-text-capitalize header-nav-main-mobile-dark header-nav-main-square header-nav-main-dropdown-no-borders header-nav-main-effect-2 header-nav-main-sub-effect-1">
-                                        <nav class="collapse">
-                                            <ul class="nav nav-pills" id="mainNav">
+                    </div>
+                </div>
+                <div class="header-column justify-content-end">
+                    <div class="header-row">
+                        <div class="header-nav header-nav-links header-nav-line header-nav-bottom-line header-nav-bottom-line-active-text-light header-nav-dropdowns-dark header-nav-light-text">
+                            <div class="header-nav-main header-nav-main-text-capitalize header-nav-main-mobile-dark header-nav-main-square header-nav-main-dropdown-no-borders header-nav-main-effect-2 header-nav-main-sub-effect-1">
+                                <nav class="collapse ">
+                                    <ul class="nav nav-pills" id="mainNav">
+                                        <li>
+                                            <a class="nav-link" asp-action="Index">
+                                                Home
+                                            </a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle" href="#">
+                                                Other Services
+                                            </a>
+                                            <ul class="dropdown-menu">
                                                 <li>
-                                                    <a class="nav-link" href="demo-digital-agency.html">
-                                                        Home
+                                                    <a class="dropdown-item" href="index.html">
+                                                        Peace of Mind
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="nav-link" href="demo-digital-agency-about.html">
-                                                        About
+                                                    <a class="dropdown-item" href="index.html#demos">
+                                                        Green Glove Services
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="nav-link active" href="demo-digital-agency-services.html">
-                                                        Services
+                                                    <a class="dropdown-item" href="index.html#demos">
+                                                        Highest Trade-In Value
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="nav-link" href="demo-digital-agency-work.html">
-                                                        Work
+                                                    <a class="dropdown-item" href="index.html#demos">
+                                                        Get Paid Give Back
                                                     </a>
                                                 </li>
                                             </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                                <ul class="header-social-icons social-icons d-none d-sm-block social-icons-clean social-icons-icon-light social-icons-medium ms-5-5">
-                                    <li class="social-icons-linkedin"><a href="http://www.linkedin.com/" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a></li>
-                                </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
+                        <ul class="header-social-icons social-icons d-none d-sm-block social-icons-clean social-icons-icon-light social-icons-medium ms-5-5">
+                            <li class="social-icons-linkedin">
+                                <a href="http://www.linkedin.com/" target="_blank" title="Linkedin">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <button class="btn header-btn-collapse-nav ms-3 ms-sm-4" data-bs-toggle="collapse" data-bs-target=".header-nav-main nav">
+                            <i class="fas fa-bars"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-        </header>
-
-        <div role="main" class="main">
-
-            <section class="page-header page-header-modern bg-primary custom-page-header">
-            </section>
-
-            <div class="container py-5 my-4">
-                <div class="row">
-                    <div class="col">
-
-                        <div class="text-center pb-5">
-                            <h1 class="text-color-dark font-weight-bold mb-1">Environmental Advocacy</h1>
-                        </div>
-
-                        <p class="text-4-5 line-height-7 text-center">Tech Trade Up has maintained “green” ITAD environmental policies since 1991. Tech Trade Up has been referred to as “being green before the term was popular.” Tech Trade Up core environmental policies:</p>
-                        <p class="text-3-5 line-height-9 mt-5 mb-5 text-center">
-                            <span class="featured-boxes featured-boxes-style-6 p-0 m-0">
-                                <span class="featured-box featured-box-primary featured-box-effect-6 p-0 m-0">
-                                    <span class="box-content p-0 m-0">
-                                        <img src="https://static.spacecrafted.com/cddb16080b58411282627602574a984a/i/ba199ca6fb0b40dda87b6a8dde0c2dd1/1/4SoifmQp45JMgBnHjfgmz/Enviromental-Standards-updated.png?dpr=2" alt="" />
-                                    </span>
-                                </span>
-                            </span>
-                        </p>
-
-
-
-                    </div>
-                </div>
-            </div>
-
-            <section class="section section-height-3 bg-color-primary border-0 m-0 appear-animation animated fadeIn appear-animation-visible" data-appear-animation="fadeIn" data-appear-animation-delay="200" style="animation-delay: 200ms;">
-                <div class="container mt-1">
-                    <div class="row pb-lg-2 counters justify-content-center align-items-end">
-
-                        <div class="col-sm-6 col-lg-4 counter mb-5 mb-md-0 mt-5">
-                            <div class="appear-animation animated fadeInLeftShorter appear-animation-visible fadeInUpShorterPlus" data-appear-animation="fadeInUpShorterPlus" data-appear-animation-delay="400" data-appear-animation-duration="400" style="animation-delay: 400ms;">
-                                <img class="img-fluid ls-is-cached lazyloaded" alt="Speed Performance" width="70" src="/Content/landing/img/services/landfill.png">
-                                <label class="font-weight-semibold text-8 negative-ls-1 text-color-white mb-0 mt-4">Zero</label>
-                                <label class="font-weight-normal text-4 text-color-white mb-0 mt-4">Landfill</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-4 counter mb-5 mb-md-0 mt-5">
-                            <div class="appear-animation animated fadeInLeftShorter appear-animation-visible fadeInUpShorterPlus" data-appear-animation="fadeInUpShorterPlus" data-appear-animation-delay="450" data-appear-animation-duration="450" style="animation-delay: 450ms;">
-                                <img class="img-fluid ls-is-cached lazyloaded" alt="Speed Performance" width="70" src="/Content/landing/img/services/incineration.png">
-                                <label class="font-weight-semibold text-8 negative-ls-1 text-color-white mb-0 mt-4">Zero</label>
-                                <label class="font-weight-normal text-4 text-color-white mb-0 mt-4">Incineration</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-4 counter mb-5 mb-md-0 mt-5">
-                            <div class="appear-animation animated fadeInLeftShorter appear-animation-visible fadeInUpShorterPlus" data-appear-animation="fadeInUpShorterPlus" data-appear-animation-delay="500" data-appear-animation-duration="500" style="animation-delay: 500ms;">
-                                <img class="img-fluid ls-is-cached lazyloaded" alt="Speed Performance" width="70" src="/Content/landing/img/services/recycling.png">
-                                <label class="font-weight-semibold text-8 negative-ls-1 text-color-white mb-0 mt-4">Zero Export</label>
-                                <label class="font-weight-normal text-4 text-color-white mb-0 mt-4">
-                                    of non-functioning assets or e-waste
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section section-parallax section-height-3 overlay overlay-show overlay-op-5 border-0 m-0 appear-animation animated fadeIn appear-animation-visible" data-appear-animation="fadeIn" data-plugin-parallax="" data-plugin-options="{'speed': 1.1, 'parallaxHeight': '50%'}" data-image-src="/Content/landing/img/services/bg-content1.jpg" style="position: relative; overflow: hidden; animation-delay: 100ms;">
-                <div class="parallax-background" style="background-image: url(&quot;/Content/landing/img/services/bg-content1.jpg&quot;); background-size: cover; position: absolute; top: 0px; left: 0px; width: 100%; height: 200%; transform: translate3d(0px, -50px, 0px); background-position-x: 50%;"></div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-
-                            <h3 class="mt-4 mb-0 pb-0 text-color-light">
-                                Downstream Partner Requirements
-                            </h3>
-                            <div class="divider divider-primary divider-small my-3">
-                                <hr class="mt-2 m-auto">
-                            </div>
-
-                            <p class="lead font-weight-regular text-4 text-color-light" style="max-width: 60%">There is no such thing as an “EPA-Certified Electronics Processing Facility.” The EPA does not audit electronics recycling operations and provide an approval designation. That is why it is necessary to work with an ITAD services provider that has a downstream process that is ISO 14001 certified and R2v3 & WEEE certified as well. These certifications require third party audits and need to be maintained.</p>
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <div class="container py-5 my-4">
-                <div class="row">
-                    <div class="col-12">
-
-                        <div class="text-center pb-5">
-                            <h1 class="text-color-dark font-weight-bold mb-1">Industry Standards For Best Practices: Recycling Vs. Recertification/Reuse</h1>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-6 mb-5 mb-lg-0 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200" style="animation-delay: 200ms;">
-                        <div class="card border-radius-0 bg-color-grey box-shadow-1 box-shadow-1-hover text-color-black">
-                            <div class="card-body">
-                                <h3 class="card-title mb-5 mt-3 text-8 text-color-primary">Recycling</h3>
-                                <div class="card-text mb-4 mt-3">
-                                    <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
-                                        Qualifications & Certifications:
-                                    </p>
-                                    <p class="p-0 m-0 text-color-black">
-                                        R2v3 and/or eStewards
-                                    </p>
-                                </div>
-                                <div class="card-text mb-4 mt-4">
-                                    <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
-                                        Authorization:
-                                    </p>
-                                    <p class="p-0 m-0 text-color-black">
-                                        Microsoft Registered Refurbishes (MRR) – "for small and medium sized refurbishers in providing professionallly PCs preinstalled with genuine Microsoft products*". Requires zero thresholds (high cost)
-                                    </p>
-                                </div>
-                                <div class="card-text mb-4 mt-4">
-                                    <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
-                                        Hierarchy On Value
-
-                                    </p>
-                                    <p class="p-0 m-0">
-                                        Sold in bulk pallets with very limited warranty – pennies on the dollar. "Commodity" market at all time low.
-
-                                    </p>
-                                </div>
-                                <div class="card-text mb-4 mt-2">
-                                    <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
-                                        Chain of Custody
-
-                                    </p>
-                                    <p class="p-0 m-0 text-color-black">
-                                        No direct information because assets are sold in bulkas used equipment to exporters and wholesalers.
-
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-6 mb-5 mb-lg-0 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400" style="animation-delay: 400ms;">
-
-                        <div class="card border-radius-0 bg-color-grey box-shadow-1 box-shadow-1-hover">
-                            <div class="card-body">
-                                <h3 class="card-title mb-1 mb-5 mt-3 text-8 text-color-primary">Recertification</h3>
-                                <div class="card-text mb-4 mt-3">
-                                    <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
-                                        Qualifications & Certifications:
-                                    </p>
-                                    <p class="p-0 m-0 text-color-black">
-                                        ISO 9001 – Recertification to like-new refurbished condition for resale to next user.
-                                    </p>
-                                </div>
-                                <div class="card-text mt-4 mb-4">
-                                    <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
-                                        Authorization:
-
-                                    </p>
-                                    <p class="p-0 m-0 text-color-black">
-                                        Microsoft Authorized Refurbishes (MAR) – "large refurbishers who meet a minimum average threshold of 1,000 PCs shipped per month**." – Changing to 20,000 PCs per year criteria.
-                                    </p>
-                                </div>
-                                <div class="card-text mt-4 mb-4">
-                                    <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
-                                        Hierarchy On Value
-                                    </p>
-                                    <p class="p-0 m-0 text-color-black">
-                                        Sold directly to the next user through major retailers such as Best Buy, Walmart and Staples (largest resellers in the marketplace according to Gartner) with warrantee from 18 to 36 months.
-                                    </p>
-                                </div>
-                                <div class="card-text mt-4 mb-2">
-                                    <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
-                                        Chain of Custody
-                                    </p>
-                                    <p class="p-0 m-0 text-color-black">
-                                        Heat Map to next user available.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>          
-
-            <section class="section section-parallax section-height-5 border-0 m-0 appear-animation animated fadeIn appear-animation-visible" data-appear-animation="fadeIn" data-plugin-parallax="" data-plugin-options="{'speed': 1.1, 'parallaxHeight': '100%'}" data-image-src="/Content/landing/img/services/footer-services1.jpeg" style="position: relative; overflow: hidden; animation-delay: 100ms;">
-                <div class="parallax-background" style="background-image: url(&quot;/Content/landing/img/services/footer-services1.jpeg&quot;); background-size: contain; position: absolute; top: 0px; left: 0px; width: 100%; height: 200%; transform: translate3d(0px, -50px, 0px); background-position-x: 0%;"></div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <h3 class="mt-4 mb-0 pb-0 text-color-light">
-                            </h3>
-                            <div class="divider divider-primary divider-small my-3">
-                                &nbsp;
-                            </div>
-
-                            <p class="lead font-weight-regular text-4 text-color-light" style="max-width: 60%">&nbsp;</p>
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-
         </div>
+    </div>
+</header>
 
-        <footer id="footer" class="mt-0">
-            <div class="container py-5 my-4">
-                <div class="row gy-4">
-                    <div class="col-lg-2 align-self-center mb-4 mb-lg-0">
-                        <a href="index.html" class="text-decoration-none">
-                            <img src="~/Content/landing/img/logo_white.png" width="125" height="35" class="img-fluid" alt="Footer Logo" />
-                        </a>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4 class="font-weight-bold text-color-light">Contact us for:</h4>
-                        <p class="text-3-5">
-                            Program Details & Quotes<br>
-                            Product Pick-Up/Logistics/Status<br>
-                            Reporting<br>
-                            Marketing Materials or Sales Calls<br>
-                            Phone: <a href="tel:18883972444" class="text-decoration-none">1-888-397-2444</a><br>
-                            Email: <a href="mailto:techtradeup@planitroi.com" class="text-decoration-none">techtradeup@planitroi.com</a>
-                        </p>
-                    </div>
+<div role="main" class="main">
+
+    <section class="page-header page-header-modern bg-primary custom-page-header">
+    </section>
+
+    <div class="container py-5 my-4">
+        <div class="row">
+            <div class="col">
+
+                <div class="text-center pb-5">
+                    <h1 class="text-color-dark font-weight-bold mb-1">Environmental Advocacy</h1>
                 </div>
+
+                <p class="text-4-5 line-height-7 text-center">Tech Trade Up has maintained “green” ITAD environmental policies since 1991. Tech Trade Up has been referred to as “being green before the term was popular.” Tech Trade Up core environmental policies:</p>
+                <p class="text-3-5 line-height-9 mt-5 mb-5 text-center">
+                    <span class="featured-boxes featured-boxes-style-6 p-0 m-0">
+                        <span class="featured-box featured-box-primary featured-box-effect-6 p-0 m-0">
+                            <span class="box-content p-0 m-0">
+                                <img src="https://static.spacecrafted.com/cddb16080b58411282627602574a984a/i/ba199ca6fb0b40dda87b6a8dde0c2dd1/1/4SoifmQp45JMgBnHjfgmz/Enviromental-Standards-updated.png?dpr=2" alt=""/>
+                            </span>
+                        </span>
+                    </span>
+                </p>
+
+
             </div>
-            <div class="footer-copyright bg-color-dark-scale-2">
-                <div class="container py-2">
-                    <div class="row py-4">
-                        <div class="col-md-4 d-flex align-items-center justify-content-center justify-content-md-start mb-2 mb-lg-0">
-                            <p class="text-color-grey text-3-5">© Copyright 2023 PlanITROI, Inc. All Rights Reserved.</p>
-                        </div>
-                        <div class="col-md-8 d-flex align-items-center justify-content-center justify-content-md-end mb-4 mb-lg-0">
-                            <ul class="footer-social-icons social-icons social-icons-clean social-icons-icon-light social-icons-big">
-                                <li class="social-icons-linkedin"><a href="https://www.linkedin.com/company/planitroi" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        </div>
     </div>
 
-    <!-- Vendor -->
-    <script src="~/Content/landing/vendor/plugins/js/plugins.min.js"></script>
+    <section class="section section-height-3 bg-color-primary border-0 m-0 appear-animation animated fadeIn appear-animation-visible" data-appear-animation="fadeIn" data-appear-animation-delay="200" style="animation-delay: 200ms;">
+        <div class="container mt-1">
+            <div class="row pb-lg-2 counters justify-content-center align-items-end">
 
-    <!-- Theme Base, Components and Settings -->
-    <script src="~/Content/landing/js/theme.js"></script>
+                <div class="col-sm-6 col-lg-4 counter mb-5 mb-md-0 mt-5">
+                    <div class="appear-animation animated fadeInLeftShorter appear-animation-visible fadeInUpShorterPlus" data-appear-animation="fadeInUpShorterPlus" data-appear-animation-delay="400" data-appear-animation-duration="400" style="animation-delay: 400ms;">
+                        <img class="img-fluid ls-is-cached lazyloaded" alt="Speed Performance" width="70" src="/Content/landing/img/services/landfill.png">
+                        <label class="font-weight-semibold text-8 negative-ls-1 text-color-white mb-0 mt-4">Zero</label>
+                        <label class="font-weight-normal text-4 text-color-white mb-0 mt-4">Landfill</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 counter mb-5 mb-md-0 mt-5">
+                    <div class="appear-animation animated fadeInLeftShorter appear-animation-visible fadeInUpShorterPlus" data-appear-animation="fadeInUpShorterPlus" data-appear-animation-delay="450" data-appear-animation-duration="450" style="animation-delay: 450ms;">
+                        <img class="img-fluid ls-is-cached lazyloaded" alt="Speed Performance" width="70" src="/Content/landing/img/services/incineration.png">
+                        <label class="font-weight-semibold text-8 negative-ls-1 text-color-white mb-0 mt-4">Zero</label>
+                        <label class="font-weight-normal text-4 text-color-white mb-0 mt-4">Incineration</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 counter mb-5 mb-md-0 mt-5">
+                    <div class="appear-animation animated fadeInLeftShorter appear-animation-visible fadeInUpShorterPlus" data-appear-animation="fadeInUpShorterPlus" data-appear-animation-delay="500" data-appear-animation-duration="500" style="animation-delay: 500ms;">
+                        <img class="img-fluid ls-is-cached lazyloaded" alt="Speed Performance" width="70" src="/Content/landing/img/services/recycling.png">
+                        <label class="font-weight-semibold text-8 negative-ls-1 text-color-white mb-0 mt-4">Zero Export</label>
+                        <label class="font-weight-normal text-4 text-color-white mb-0 mt-4">
+                            of non-functioning assets or e-waste
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Current Page Vendor and Views -->
-    <script src="~/Content/landing/js/views/view.contact.js"></script>
+    <section class="section section-parallax section-height-3 overlay overlay-show overlay-op-5 border-0 m-0 appear-animation animated fadeIn appear-animation-visible" data-appear-animation="fadeIn" data-plugin-parallax="" data-plugin-options="{'speed': 1.1, 'parallaxHeight': '50%'}" data-image-src="/Content/landing/img/services/bg-content1.jpg" style="position: relative; overflow: hidden; animation-delay: 100ms;">
+        <div class="parallax-background" style="background-image: url(&quot;/Content/landing/img/services/bg-content1.jpg&quot;); background-size: cover; position: absolute; top: 0px; left: 0px; width: 100%; height: 200%; transform: translate3d(0px, -50px, 0px); background-position-x: 50%;"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
 
-    <!-- Theme Custom -->
-    <script src="~/Content/landing/js/custom.js"></script>
+                    <h3 class="mt-4 mb-0 pb-0 text-color-light">
+                        Downstream Partner Requirements
+                    </h3>
+                    <div class="divider divider-primary divider-small my-3">
+                        <hr class="mt-2 m-auto">
+                    </div>
 
-    <!-- Theme Initialization Files -->
-    <script src="~/Content/landing/js/theme.init.js"></script>
+                    <p class="lead font-weight-regular text-4 text-color-light" style="max-width: 60%">There is no such thing as an “EPA-Certified Electronics Processing Facility.” The EPA does not audit electronics recycling operations and provide an approval designation. That is why it is necessary to work with an ITAD services provider that has a downstream process that is ISO 14001 certified and R2v3 & WEEE certified as well. These certifications require third party audits and need to be maintained.</p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container py-5 my-4">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="text-center pb-5">
+                    <h1 class="text-color-dark font-weight-bold mb-1">Industry Standards For Best Practices: Recycling Vs. Recertification/Reuse</h1>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-6 mb-5 mb-lg-0 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200" style="animation-delay: 200ms;">
+                <div class="card border-radius-0 bg-color-grey box-shadow-1 box-shadow-1-hover text-color-black">
+                    <div class="card-body">
+                        <h3 class="card-title mb-5 mt-3 text-8 text-color-primary">Recycling</h3>
+                        <div class="card-text mb-4 mt-3">
+                            <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
+                                Qualifications & Certifications:
+                            </p>
+                            <p class="p-0 m-0 text-color-black">
+                                R2v3 and/or eStewards
+                            </p>
+                        </div>
+                        <div class="card-text mb-4 mt-4">
+                            <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
+                                Authorization:
+                            </p>
+                            <p class="p-0 m-0 text-color-black">
+                                Microsoft Registered Refurbishes (MRR) – "for small and medium sized refurbishers in providing professionallly PCs preinstalled with genuine Microsoft products*". Requires zero thresholds (high cost)
+                            </p>
+                        </div>
+                        <div class="card-text mb-4 mt-4">
+                            <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
+                                Hierarchy On Value
+
+                            </p>
+                            <p class="p-0 m-0">
+                                Sold in bulk pallets with very limited warranty – pennies on the dollar. "Commodity" market at all time low.
+
+                            </p>
+                        </div>
+                        <div class="card-text mb-4 mt-2">
+                            <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
+                                Chain of Custody
+
+                            </p>
+                            <p class="p-0 m-0 text-color-black">
+                                No direct information because assets are sold in bulkas used equipment to exporters and wholesalers.
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-6 mb-5 mb-lg-0 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400" style="animation-delay: 400ms;">
+
+                <div class="card border-radius-0 bg-color-grey box-shadow-1 box-shadow-1-hover">
+                    <div class="card-body">
+                        <h3 class="card-title mb-1 mb-5 mt-3 text-8 text-color-primary">Recertification</h3>
+                        <div class="card-text mb-4 mt-3">
+                            <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
+                                Qualifications & Certifications:
+                            </p>
+                            <p class="p-0 m-0 text-color-black">
+                                ISO 9001 – Recertification to like-new refurbished condition for resale to next user.
+                            </p>
+                        </div>
+                        <div class="card-text mt-4 mb-4">
+                            <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
+                                Authorization:
+
+                            </p>
+                            <p class="p-0 m-0 text-color-black">
+                                Microsoft Authorized Refurbishes (MAR) – "large refurbishers who meet a minimum average threshold of 1,000 PCs shipped per month**." – Changing to 20,000 PCs per year criteria.
+                            </p>
+                        </div>
+                        <div class="card-text mt-4 mb-4">
+                            <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
+                                Hierarchy On Value
+                            </p>
+                            <p class="p-0 m-0 text-color-black">
+                                Sold directly to the next user through major retailers such as Best Buy, Walmart and Staples (largest resellers in the marketplace according to Gartner) with warrantee from 18 to 36 months.
+                            </p>
+                        </div>
+                        <div class="card-text mt-4 mb-2">
+                            <p class="text-decoration-underline font-weight-bold p-0 m-0 text-color-black">
+                                Chain of Custody
+                            </p>
+                            <p class="p-0 m-0 text-color-black">
+                                Heat Map to next user available.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <section class="section section-parallax section-height-5 border-0 m-0 appear-animation animated fadeIn appear-animation-visible" data-appear-animation="fadeIn" data-plugin-parallax="" data-plugin-options="{'speed': 1.1, 'parallaxHeight': '100%'}" data-image-src="/Content/landing/img/services/footer-services1.jpeg" style="position: relative; overflow: hidden; animation-delay: 100ms;">
+        <div class="parallax-background" style="background-image: url(&quot;/Content/landing/img/services/footer-services1.jpeg&quot;); background-size: contain; position: absolute; top: 0px; left: 0px; width: 100%; height: 200%; transform: translate3d(0px, -50px, 0px); background-position-x: 0%;"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h3 class="mt-4 mb-0 pb-0 text-color-light">
+                    </h3>
+                    <div class="divider divider-primary divider-small my-3">
+                        &nbsp;
+                    </div>
+
+                    <p class="lead font-weight-regular text-4 text-color-light" style="max-width: 60%">&nbsp;</p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer id="footer" class="mt-0">
+    <div class="container py-5 my-4">
+        <div class="row gy-4">
+            <div class="col-lg-2 align-self-center mb-4 mb-lg-0">
+                <a href="index.html" class="text-decoration-none">
+                    <img src="~/Content/landing/img/logo_white.png" width="125" height="35" class="img-fluid" alt="Footer Logo"/>
+                </a>
+            </div>
+            <div class="col-lg-3">
+                <h4 class="font-weight-bold text-color-light">Contact us for:</h4>
+                <p class="text-3-5">
+                    Program Details & Quotes<br>
+                    Product Pick-Up/Logistics/Status<br>
+                    Reporting<br>
+                    Marketing Materials or Sales Calls<br>
+                    Phone: <a href="tel:18883972444" class="text-decoration-none">1-888-397-2444</a><br>
+                    Email: <a href="mailto:techtradeup@planitroi.com" class="text-decoration-none">techtradeup@planitroi.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright bg-color-dark-scale-2">
+        <div class="container py-2">
+            <div class="row py-4">
+                <div class="col-md-4 d-flex align-items-center justify-content-center justify-content-md-start mb-2 mb-lg-0">
+                    <p class="text-color-grey text-3-5">© Copyright 2023 PlanITROI, Inc. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-8 d-flex align-items-center justify-content-center justify-content-md-end mb-4 mb-lg-0">
+                    <ul class="footer-social-icons social-icons social-icons-clean social-icons-icon-light social-icons-big">
+                        <li class="social-icons-linkedin">
+                            <a href="https://www.linkedin.com/company/planitroi" target="_blank" title="Linkedin">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+
+<!-- Vendor -->
+<script src="~/Content/landing/vendor/plugins/js/plugins.min.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="~/Content/landing/js/theme.js"></script>
+
+<!-- Current Page Vendor and Views -->
+<script src="~/Content/landing/js/views/view.contact.js"></script>
+
+<!-- Theme Custom -->
+<script src="~/Content/landing/js/custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="~/Content/landing/js/theme.init.js"></script>
 
 </body>
 </html>

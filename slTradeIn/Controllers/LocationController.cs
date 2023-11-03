@@ -6,7 +6,8 @@ using slTradeIn.Models;
 
 namespace slTradeIn.Controllers;
 
-public class LocationController : Controller
+public class LocationController : CustomController
+
 {
     private readonly Detail_TTU_userCart_Data _detail_TTU_UserCart_Data;
     private readonly Detail_TTU_userLocation_Data _detail_TTU_UserLocation_Data;

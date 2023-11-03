@@ -9,7 +9,7 @@ using slTradeIn.Shared;
 
 namespace slTradeIn.Controllers;
 
-public class HomeController : Controller
+public class HomeController : CustomController
 {
     private readonly Detail_ModelMaster_Data _detail_ModelMaster_Data;
     private readonly Detail_TTU_user_Data _detail_TTU_User_Data;

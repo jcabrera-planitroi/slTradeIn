@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace slTradeIn.Controllers
+namespace slTradeIn.Controllers;
+
+public class LandingController : Controller
 {
-    public class LandingController : Controller
+    public ActionResult Index()
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-        public ActionResult EnvironmentalAdvocacy()
-        {
-            return View();
-        }
-        public ActionResult DataDestruction()
-        {
-            return View();
-        }
+        return View();
+    }
+
+    public ActionResult EnvironmentalAdvocacy()
+    {
+        return View();
+    }
+
+    public ActionResult DataDestruction()
+    {
+        return View();
     }
 }

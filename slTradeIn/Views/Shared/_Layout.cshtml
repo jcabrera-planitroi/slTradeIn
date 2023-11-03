@@ -70,6 +70,15 @@
         });
     </script>
 
+    <!--DevExtreme-->
+    <script src="~/js/devextreme/dx.all.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+
+    @* Predefined themes: https://js.devexpress.com/DevExtreme/Guide/Themes_and_Styles/Predefined_Themes/ *@
+    <link href="~/css/devextreme/dx.light.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/Site.css" />
+
     <style>
         .btn.btn-primary, .btn.btn-primary:not(bg-transparent):hover {
             background-color: #74bd43;
@@ -125,7 +134,7 @@
                                             @if (User.IsInRole("TECH_PARTNER"))
                                             {
                                                 <li class="dropdown">
-                                                    <a class="dropdown-item dropdown-toggle" href="@Url.Action("Index", "Mail")">
+                                                    <a class="dropdown-item dropdown-toggle" href="@Url.Action("Index", "Contacts")">
                                                         Contacts
                                                     </a>
                                                 </li>
