@@ -79,12 +79,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
-// app.Use(async (context, next) =>
-// {
-//     var sessionValueProvider = new SessionTradeIn.WebSessionValueProvider(context.Session);
-//     SessionTradeIn.Initialize(sessionValueProvider);
-//     await next();
-// });
 
 var sessionValueProvider = new SessionTradeIn.WebSessionValueProvider(app.Services.GetService<IHttpContextAccessor>() ??
                                                                       throw new Exception(

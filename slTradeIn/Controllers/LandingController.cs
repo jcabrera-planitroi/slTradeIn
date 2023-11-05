@@ -18,4 +18,9 @@ public class LandingController : Controller
     {
         return View();
     }
+
+    public ActionResult PeaceOfMind()
+    {
+        return View();
+    }
 }
